@@ -32,3 +32,31 @@
         }
     }
 }
+
+.info-icons {
+    padding-top: 5px;
+    margin-top: 25px;
+
+    p {
+        position: relative;
+        font-style: italic;
+        padding: 0 5px;
+
+        &:hover .tooltip {
+            visibility: visible;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -2px;
+            visibility: hidden;
+            background-color: white;
+            border: 1px solid black;
+            width: 300px;
+            padding: 2px 5px;
+            margin-left: 5px;
+            display: inline-block;
+            font-style: normal;
+        }
+    }
+}

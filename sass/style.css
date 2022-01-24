@@ -22,4 +22,29 @@
   width: 30px;
 }
 
+.info-icons {
+  padding-top: 5px;
+  margin-top: 25px;
+}
+.info-icons p {
+  position: relative;
+  font-style: italic;
+  padding: 0 5px;
+}
+.info-icons p:hover .tooltip {
+  visibility: visible;
+}
+.info-icons p .tooltip {
+  position: absolute;
+  top: -2px;
+  visibility: hidden;
+  background-color: white;
+  border: 1px solid black;
+  width: 300px;
+  padding: 2px 5px;
+  margin-left: 5px;
+  display: inline-block;
+  font-style: normal;
+}
+
 /*# sourceMappingURL=style.css.map */
