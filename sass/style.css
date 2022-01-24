@@ -1,3 +1,25 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+.wrapper-days .day {
+  display: flex;
+  flex-direction: column;
+}
+.wrapper-days .day .wrapper-info {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+.wrapper-days .day .wrapper-info .time-section {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid lightgray;
+}
+.wrapper-days .day .wrapper-info .time-section .icon {
+  width: 30px;
+}
 
 /*# sourceMappingURL=style.css.map */

@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper-days {
+    // display: flex;
+    // flex-direction: column;
+
+    .day {
+        display: flex;
+        flex-direction: column;
+        
+        .wrapper-info {
+            display: flex;
+            flex-direction: row;
+            gap: 3px;
+
+            .time-section {
+                display: flex;
+                flex-direction: column;
+                // gap: 10px;
+                border-left: 1px solid lightgray;
+
+                .icon {
+                    width: 30px;
+                }
+            }
+
+
+        }
+    }
+}
