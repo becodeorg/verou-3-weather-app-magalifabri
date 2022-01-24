@@ -5,6 +5,7 @@ searchButton.addEventListener("click", search);
 const wrapperWeekDiv = document.querySelector(".wrapper-days");
 console.log(wrapperWeekDiv);
 
+
 window.addEventListener("keydown", event => {
     if (event.key === "Enter") {
         search();
@@ -30,6 +31,7 @@ function search() {
         .then(response => response.json())
         .then(weatherData => (processData(weatherData)))
 };
+search();
 
 const parsedData = [];
 
@@ -80,28 +82,17 @@ function createDOMElements() {
             newWrapperDayDiv.append(newWrapperInfoDiv);
 
             // insert info icons with tooltip at start of rows
-            // time
-            const newTimeInfoP = createP("time", "i");
-            addTooltip(newTimeInfoP, "time of day");
-            // temperature
-            const newTemperatureInfoP = createP("temperature", "i");
-            addTooltip(newTemperatureInfoP, "temperature in Celsius");
-            // chance of precipitation
-            const newPrecipitationInfoP = createP("precipitation", "i");
-            addTooltip(newPrecipitationInfoP, "probability of precipitation in %")
-            // humidity
-            const newHumidityInfoP = createP("humidity", "i");
-            addTooltip(newHumidityInfoP, "humidity in %");
-            // wind speed km/h
-            const newWindSpeedInfoP = createP("wind-speed", "i");
-            addTooltip(newWindSpeedInfoP, "wind speed in km/h");
-
-            // newWrapperInfoDiv.append(newTimeInfoP);
+            const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day");
+            const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius");
+            const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation in %");
+            const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity in %");
+            const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h");
 
             // create time section wrapper and insert base data items
             const newInfoIconsDiv = document.createElement("div");
             newInfoIconsDiv.classList.add("info-icons");
-            newInfoIconsDiv.append(newTimeInfoP, newTemperatureInfoP, newPrecipitationInfoP, newHumidityInfoP, newWindSpeedInfoP);
+            newInfoIconsDiv.append(newTimeIconWrapperDiv, newTempIconWrapperDiv, newPrecipIconsWrapperDiv, newHumidityIconWrapperDiv, newWindSpeedIconWrapperDiv);
+            // newInfoIconsDiv.append(newTimeIconWrapperDiv, newTemperatureInfoP, newPrecipitationInfoP, newHumidityInfoP, newWindSpeedInfoP);
             
             // add time section to info wrapper
             newWrapperInfoDiv.append(newInfoIconsDiv);
@@ -145,6 +136,18 @@ function addTooltip(parentElem, tooltipContent) {
     newTooltip.textContent = tooltipContent;
     
     parentElem.append(newTooltip);
+}
+
+function createIconWithTooltip(imgURL, tooltipText) {
+    const icon = document.createElement("img");
+    icon.classList.add("icon");
+    icon.setAttribute("src", imgURL);
+    
+    const iconWrapperDiv = document.createElement("div");
+    iconWrapperDiv.append(icon);
+    addTooltip(iconWrapperDiv, tooltipText);
+
+    return (iconWrapperDiv);
 }
 
 function convertKelvinToCelsius(F) {

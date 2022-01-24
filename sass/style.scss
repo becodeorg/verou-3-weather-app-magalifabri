@@ -1,34 +1,51 @@
+/*
+font-family: 'Open Sans', sans-serif;
+font-family: 'Roboto', sans-serif;
+*/
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html {
+    font-size: 1.2rem;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    user-select: none;
+}
+
 .wrapper-days {
-    // display: flex;
-    // flex-direction: column;
 
     .day {
         display: flex;
         flex-direction: column;
+        padding: 10px;
         
         .wrapper-info {
             display: flex;
-            flex-direction: row;
-            gap: 3px;
+            flex-direction: column;
 
+            padding: 10px 0;
+            
             .time-section {
                 display: flex;
-                flex-direction: column;
-                // gap: 10px;
-                border-left: 1px solid lightgray;
+                flex-direction: row;
+                gap: 10px;
+                align-items: center;
+                text-align: center;
 
                 .icon {
-                    width: 30px;
+                    width: 15%;
+                }
+                p {
+                    width: 40px;
                 }
             }
-
-
         }
     }
 }
@@ -36,11 +53,22 @@
 .info-icons {
     padding-top: 5px;
     margin-top: 25px;
-
-    p {
+    
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: calc(15% + 10px);
+    
+    div {
         position: relative;
-        font-style: italic;
+        width: 40px;
         padding: 0 5px;
+
+        text-align: center;
+
+        .icon {
+            width: 80%;
+        }
 
         &:hover .tooltip {
             visibility: visible;
@@ -48,15 +76,20 @@
 
         .tooltip {
             position: absolute;
-            top: -2px;
+            width: 120px;
+            bottom: 120%;
+            left: 50%;
+            margin-left: -60px;
+
             visibility: hidden;
-            background-color: white;
-            border: 1px solid black;
-            width: 300px;
-            padding: 2px 5px;
-            margin-left: 5px;
-            display: inline-block;
-            font-style: normal;
+            z-index: 1;
+            padding: 5px;
+            background-color: black;
+            border-radius: 5px;
+            
+            color: white;
+            font-size: .8rem;
+            font-family: 'Roboto', sans-serif;
         }
     }
 }
