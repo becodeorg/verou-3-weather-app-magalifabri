@@ -1,10 +1,8 @@
-// import { APIkey } from "./config.js";
-const APIkey = process.env.APIkey;
-
 const searchInput = document.querySelector(".search-input");
 const searchButton = document.querySelector(".search-button");
 const wrapperWeekDiv = document.querySelector(".wrapper-days");
 
+const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 const daysOfTheWeek = [
     "Sunday",
     "Monday",
@@ -21,21 +19,6 @@ window.addEventListener("keydown", event => {
         search();
     }
 });
-
-// var bg = $("#bg1, #bg2");
-
-// function resizeBackground() {
-//     bg.height($(window).height());
-// }
-
-// $(window).resize(resizeBackground);
-// resizeBackground();
-
-document.addEventListener('scroll', () => {
-    console.log(window.innerHeight);
-    document.body.style.backgroundSize = window.innerWidth + "px " + (window.innerHeight + 50) + "px";
-});
-// document.body.style.backgroundSize = "10px";
 
 
 function search() {
