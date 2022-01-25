@@ -26,6 +26,7 @@ body {
 .wrapper-days .day .wrapper-info {
   display: flex;
   flex-direction: column;
+  gap: 15px;
   padding: 10px 0;
 }
 .wrapper-days .day .wrapper-info .time-section {
@@ -35,11 +36,37 @@ body {
   align-items: center;
   text-align: center;
 }
-.wrapper-days .day .wrapper-info .time-section .icon {
-  width: 15%;
-}
 .wrapper-days .day .wrapper-info .time-section p {
   width: 40px;
+}
+
+.weather-icon-wrapper {
+  position: relative;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.weather-icon-wrapper .weather-icon {
+  width: 70%;
+}
+.weather-icon-wrapper .tooltip {
+  position: absolute;
+  left: 100%;
+  width: max-content;
+  transform: scaleX(0%);
+  transform-origin: 0% 50%;
+  transition: all 0.3s;
+  z-index: 1;
+  padding: 5px;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.8rem;
+  font-family: "Roboto", sans-serif;
+}
+.weather-icon-wrapper:hover .tooltip {
+  transform: scaleX(100%);
 }
 
 .info-icons {
@@ -48,7 +75,7 @@ body {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  margin-left: calc(15% + 10px);
+  margin-left: 50px;
 }
 .info-icons div {
   position: relative;

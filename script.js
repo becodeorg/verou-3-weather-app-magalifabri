@@ -144,15 +144,21 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
     const newHumidityP = createP("humidity", item.humidity + "%");
     const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));
-    const newIconImg = document.createElement("img");
-    newIconImg.classList.add("icon");
-    newIconImg.setAttribute("src", `./images/${item.iconName}.png`);
-    newIconImg.setAttribute("alt", "icon of " + item.description);
+    const newWeatherIconImg = document.createElement("img");
+    newWeatherIconImg.classList.add("weather-icon");
+    newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
+    newWeatherIconImg.setAttribute("alt", "icon of " + item.description);
+
+    const newIconImgWrapperDiv = document.createElement("div");
+    newIconImgWrapperDiv.classList.add("weather-icon-wrapper");
+    newIconImgWrapperDiv.append(newWeatherIconImg);
+    addTooltip(newIconImgWrapperDiv, item.description);
+
     
     // create time section wrapper and insert base data items
     const newTimeSectionDiv = document.createElement("div");
     newTimeSectionDiv.classList.add("time-section");
-    newTimeSectionDiv.append(newIconImg, newTimeP, newTempP, newPrecipitationP, newHumidityP, newWindSpeedP);
+    newTimeSectionDiv.append(newIconImgWrapperDiv, newTimeP, newTempP, newPrecipitationP, newHumidityP, newWindSpeedP);
     
     // add time section to info wrapper
     InfoWrapperDiv.append(newTimeSectionDiv);
