@@ -3,6 +3,10 @@ font-family: 'Open Sans', sans-serif;
 font-family: 'Roboto', sans-serif;
 */
 
+$black: rgb(37, 37, 37);
+$white: rgb(248, 246, 242);
+$darkSkyBlue: rgb(28, 84, 121);
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,35 +17,43 @@ html {
     font-size: 1.2rem;
 }
 
-body {
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Open Sans', sans-serif;
-    user-select: none;
-
-    width: 350px;
-    margin: 0 auto;
-
-    padding: 10px;
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
 
     // background-image: url("https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80");
     // background-image: url("https://images.unsplash.com/photo-1542272201-b1ca555f8505?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80");
     // background-image: url("https://images.unsplash.com/photo-1517639493569-5666a7b2f494?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80");
     // background-image: url("https://images.unsplash.com/photo-1503441669932-76d3a4625eb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=805&q=80");
     background-image: url("https://images.unsplash.com/photo-1498496294664-d9372eb521f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
-    background-repeat: no-repeat;
-    // background-attachment: fixed;
+
     background-size: cover;
-    background-position: center;
+    z-index: -1;
+}
+
+body {
+    width: 350px;
+    margin: 0 auto;
+    padding: 10px;
+
+    font-family: 'Open Sans', sans-serif;
+    user-select: none;
+    color: $black;
 }
 
 header {
-    padding: 20px 0 30px;
+    padding: 10px 0 30px;
 
     h1 {
         text-align: center;
         margin-bottom: 10px;
     
-        color: white;
+        color: $white;
+        text-shadow: 0px 0px 3px black;
+        font-weight: lighter;
     }
 }
 
@@ -52,17 +64,24 @@ header {
     width: max-content;
     align-items: center;
 
+    span {
+        position: absolute;
+        color: $black;
+        margin-left: 10px;
+    }
+
     .search-input {
-        padding: 5px 15px;
-        padding-right: 40px;
+        padding: 5px 40px;
         left: 0;
         top: 0;
         
         border-radius: 20px;
-        border: 1px solid gray;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.75);
 
         font-size: inherit;
         font-family: inherit;
+        color: $black;
     }
 
     .search-button {
@@ -91,24 +110,23 @@ header {
 
 .day-name {
     margin: 30px 0px 20px;
-    text-indent: 55px;
+    color: $darkSkyBlue;
 }
 
 .wrapper-days {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.75);
 
     .day {
         display: flex;
         flex-direction: column;
-        // padding: 10px;
-        background-color: rgba(255, 255, 255, 0.5);
+        align-items: center;
         padding: 10px;
-        border-radius: 5px;
         
         .wrapper-info {
             display: flex;
             flex-direction: column;
             gap: 15px;
-
 
             .time-section {
                 display: flex;
@@ -125,6 +143,18 @@ header {
     }
 }
 
+.tooltip {
+    transition: all .3s;
+    z-index: 1;
+    padding: 5px;
+    background-color: $darkSkyBlue;
+    border-radius: 5px;
+    
+    color: $white;
+    font-size: .8rem;
+    font-family: 'Roboto', sans-serif;
+}
+
 .weather-icon-wrapper {
     position: relative;
     width: 40px;
@@ -135,6 +165,8 @@ header {
 
     .weather-icon {
         width: 70%;
+        border-bottom: 1px dotted black;
+        padding-bottom: 3px;
     }
 
     .tooltip {
@@ -144,16 +176,8 @@ header {
 
         transform: scaleX(0%);
         transform-origin: 0% 50%;
-        transition: all .3s;
 
-        z-index: 1;
-        padding: 5px;
-        background-color: black;
-        border-radius: 5px;
-        
-        color: white;
-        font-size: .8rem;
-        font-family: 'Roboto', sans-serif;
+        padding: 5px 10px;
     }
 
     &:hover .tooltip {
@@ -161,14 +185,14 @@ header {
     }
 }
 
-.info-icons {
+.info-icons-wrapper {
     margin-left: 50px;
 
     display: flex;
     flex-direction: row;
     gap: 10px;
     
-    div {
+    .icon-wrapper {
         position: relative;
         width: 40px;
         padding: 0 5px;
@@ -177,6 +201,8 @@ header {
 
         .icon {
             width: 80%;
+            border-bottom: 1px dotted black;
+            padding-bottom: 3px;
         }
 
         &:hover .tooltip {
@@ -192,15 +218,10 @@ header {
 
             transform: scaleY(0%);
             transform-origin: 50% 100%;
-            transition: all .3s;
-            z-index: 1;
-            padding: 5px;
-            background-color: black;
-            border-radius: 5px;
-            
-            color: white;
-            font-size: .8rem;
-            font-family: 'Roboto', sans-serif;
+        }
+
+        &.wind .tooltip {
+            margin-left: -70px;
         }
     }
 }

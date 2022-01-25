@@ -20,6 +20,20 @@ window.addEventListener("keydown", event => {
     }
 });
 
+// var bg = $("#bg1, #bg2");
+
+// function resizeBackground() {
+//     bg.height($(window).height());
+// }
+
+// $(window).resize(resizeBackground);
+// resizeBackground();
+
+document.addEventListener('scroll', () => {
+    console.log(window.innerHeight);
+    document.body.style.backgroundSize = window.innerWidth + "px " + (window.innerHeight + 50) + "px";
+});
+// document.body.style.backgroundSize = "10px";
 
 
 function search() {
@@ -39,7 +53,7 @@ function clearWrapperWeekDiv() {
     for (const day of days) {
         day.remove();
     }
-    
+
     const errorMsg = wrapperWeekDiv.querySelector(".error-message");
     if (errorMsg) {
         errorMsg.remove();
@@ -130,15 +144,15 @@ function addInfoWrapperToDay(newDayWrapperDiv) {
 
 function addInfoIconsWrapperToInfoWrapper(newInfoWrapperDiv) {
     // insert info icons with tooltip at start of rows
-    const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day");
-    const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius");
-    const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation");
-    const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity");
-    const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h");
+    const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day", "time");
+    const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius", "temp");
+    const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation", "pop");
+    const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity", "humid");
+    const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h", "wind");
 
     // create time section wrapper and insert base data items
     const newInfoIconsWrapperDiv = document.createElement("div");
-    newInfoIconsWrapperDiv.classList.add("info-icons");
+    newInfoIconsWrapperDiv.classList.add("info-icons-wrapper");
     newInfoIconsWrapperDiv.append(newTimeIconWrapperDiv, newTempIconWrapperDiv, newPrecipIconsWrapperDiv, newHumidityIconWrapperDiv, newWindSpeedIconWrapperDiv);
     // newInfoIconsWrapperDiv.append(newTimeIconWrapperDiv, newTemperatureInfoP, newPrecipitationInfoP, newHumidityInfoP, newWindSpeedInfoP);
     
@@ -147,12 +161,13 @@ function addInfoIconsWrapperToInfoWrapper(newInfoWrapperDiv) {
 }
 
 // addInfoIconsWrapperToInfoWrapper() HELPER FUNCTIONS
-function createIconWithTooltip(imgURL, tooltipText) {
+function createIconWithTooltip(imgURL, tooltipText, iconWrapperClass) {
     const icon = document.createElement("img");
     icon.classList.add("icon");
     icon.setAttribute("src", imgURL);
     
     const iconWrapperDiv = document.createElement("div");
+    iconWrapperDiv.classList.add("icon-wrapper", iconWrapperClass);
     iconWrapperDiv.append(icon);
     addTooltip(iconWrapperDiv, tooltipText);
 
