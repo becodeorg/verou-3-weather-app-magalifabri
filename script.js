@@ -1,7 +1,8 @@
+import { APIkey } from "./config.js";
+
 const searchInput = document.querySelector(".search-input");
 const searchButton = document.querySelector(".search-button");
 const wrapperWeekDiv = document.querySelector(".wrapper-days");
-const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 
 const daysOfTheWeek = [
     "Sunday",
@@ -70,7 +71,7 @@ function processData(weatherData) {
 
     const parsedData = [];
     console.log(weatherData);
-    for (listItem of weatherData.list) {
+    for (const listItem of weatherData.list) {
         const item = {};
         item["summary"] = listItem.weather[0].main;
         item["description"] = listItem.weather[0].description;
