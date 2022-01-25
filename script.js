@@ -1,4 +1,5 @@
 // import { APIkey } from "./config.js";
+const APIkey = process.env.APIkey;
 
 const searchInput = document.querySelector(".search-input");
 const searchButton = document.querySelector(".search-button");
