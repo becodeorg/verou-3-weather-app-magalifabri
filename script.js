@@ -1,16 +1,7 @@
 const searchBar = document.querySelector(".search-bar");
 const searchButton = document.querySelector(".search-button");
-searchButton.addEventListener("click", search);
-
 const wrapperWeekDiv = document.querySelector(".wrapper-days");
-console.log(wrapperWeekDiv);
-
-
-window.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        search();
-    }
-});
+const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 
 const daysOfTheWeek = [
     "Sunday",
@@ -22,7 +13,14 @@ const daysOfTheWeek = [
     "Saturday"
 ]
 
-const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
+searchButton.addEventListener("click", search);
+window.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+        search();
+    }
+});
+
+
 
 function search() {
     const searchedLocation = searchBar.value;
@@ -31,12 +29,12 @@ function search() {
         .then(response => response.json())
         .then(weatherData => (processData(weatherData)))
 };
+// run search without triggering an event
 search();
 
-const parsedData = [];
-
 function processData(weatherData) {
-    console.log(weatherData);
+    const parsedData = [];
+
     for (listItem of weatherData.list) {
         const item = {};
         item["summary"] = listItem.weather[0].main;
@@ -50,94 +48,73 @@ function processData(weatherData) {
         item["wind-speed"] = listItem.wind.speed; // meter/sec
         parsedData.push(item);
     }
-    // console.log(parsedData);
-    // console.log(parsedData[0]["date"].getHours());
 
-    createDOMElements();
+    createDomElems(parsedData);
 }
 
-function createDOMElements() {
-    let currentDay = "";
+function createDomElems(parsedData) {
+    let lastHandledDay = "";
+    let InfoWrapperDiv;
+
     for (const item of parsedData) {
-        
         const dayOfCurrentItem = daysOfTheWeek[item.date.getDay()];
-        // if item pertains to a new day, create new day wrapper and info wrapper divs
-        if (currentDay !== dayOfCurrentItem) {
-            currentDay = dayOfCurrentItem;
+        // if item pertains to a new day, create new day wrapper
+        if (lastHandledDay !== dayOfCurrentItem) {
+            lastHandledDay = dayOfCurrentItem;
             
-            // create new day wrapper and insert into week wrapper
-            const newWrapperDayDiv = document.createElement("div");
-            newWrapperDayDiv.classList.add("day");
-            wrapperWeekDiv.append(newWrapperDayDiv);
-            
-            // create new header with day and insert into day wrapper
-            const dayHeader = document.createElement("h2");
-            dayHeader.textContent = dayOfCurrentItem;
-            newWrapperDayDiv.append(dayHeader);
-            
-            // create new info wrapper (sub wrapper of day) and insert into day wrapper
-            const newWrapperInfoDiv = document.createElement("div");
-            newWrapperInfoDiv.classList.add("wrapper-info");
-            // insert info wrapper into day wrapper
-            newWrapperDayDiv.append(newWrapperInfoDiv);
-
-            // insert info icons with tooltip at start of rows
-            const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day");
-            const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius");
-            const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation in %");
-            const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity in %");
-            const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h");
-
-            // create time section wrapper and insert base data items
-            const newInfoIconsDiv = document.createElement("div");
-            newInfoIconsDiv.classList.add("info-icons");
-            newInfoIconsDiv.append(newTimeIconWrapperDiv, newTempIconWrapperDiv, newPrecipIconsWrapperDiv, newHumidityIconWrapperDiv, newWindSpeedIconWrapperDiv);
-            // newInfoIconsDiv.append(newTimeIconWrapperDiv, newTemperatureInfoP, newPrecipitationInfoP, newHumidityInfoP, newWindSpeedInfoP);
-            
-            // add time section to info wrapper
-            newWrapperInfoDiv.append(newInfoIconsDiv);
+            const dayWrapperDiv = addDay();
+            addDayNameToDay(dayOfCurrentItem, dayWrapperDiv);
+            InfoWrapperDiv = addInfoWrapperToDay(dayWrapperDiv);
+            addInfoIconsWrapperToInfoWrapper(InfoWrapperDiv);
         }
 
-        const currentDayWrapper = wrapperWeekDiv.children[wrapperWeekDiv.children.length - 1];
-        const currentInfoWrapper = currentDayWrapper.children[1];
-
-        // create base data items for time section
-        const newTimeP = createP("time", item.date.getHours() + "u");
-        const newSummaryP = createP("summary", item.summary);
-        const newTempP = createP("temperature", convertKelvinToCelsius(item.temperature) + "°");
-        const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
-        const newHumidityP = createP("humidity", item.humidity + "%");
-        const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));
-        const newIconImg = document.createElement("img");
-        newIconImg.classList.add("icon");
-        newIconImg.setAttribute("src", `./images/${item.iconName}.png`);
-        
-        // create time section wrapper and insert base data items
-        const newTimeSectionDiv = document.createElement("div");
-        newTimeSectionDiv.classList.add("time-section");
-        newTimeSectionDiv.append(newIconImg, newTimeP, newTempP, newPrecipitationP, newHumidityP, newWindSpeedP);
-        
-        // add time section to info wrapper
-        currentInfoWrapper.append(newTimeSectionDiv);
+        addTimeSectionToInfoWrapper(item, InfoWrapperDiv);
     }
 }
 
-function createP(className, content) {
-    const newP = document.createElement("p");
-    newP.classList.add(className);
-    newP.textContent = content;
+// createDomElems() HELPER FUNCTIONS
+function addDay() {
+    const newDayWrapperDiv = document.createElement("div");
+    newDayWrapperDiv.classList.add("day");
+    wrapperWeekDiv.append(newDayWrapperDiv);
 
-    return (newP);
+    return (newDayWrapperDiv);
 }
 
-function addTooltip(parentElem, tooltipContent) {
-    const newTooltip = document.createElement("div");
-    newTooltip.classList.add("tooltip");
-    newTooltip.textContent = tooltipContent;
+function addDayNameToDay(dayName, newDayWrapperDiv) {
+    const dayHeader = document.createElement("h2");
+    dayHeader.textContent = dayName;
+    newDayWrapperDiv.append(dayHeader);
+}
+
+function addInfoWrapperToDay(newDayWrapperDiv) {
+    const newInfoWrapperDiv = document.createElement("div");
+    newInfoWrapperDiv.classList.add("wrapper-info");
     
-    parentElem.append(newTooltip);
+    newDayWrapperDiv.append(newInfoWrapperDiv);
+
+    return (newInfoWrapperDiv);
 }
 
+function addInfoIconsWrapperToInfoWrapper(newInfoWrapperDiv) {
+    // insert info icons with tooltip at start of rows
+    const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day");
+    const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius");
+    const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation");
+    const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity");
+    const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h");
+
+    // create time section wrapper and insert base data items
+    const newInfoIconsWrapperDiv = document.createElement("div");
+    newInfoIconsWrapperDiv.classList.add("info-icons");
+    newInfoIconsWrapperDiv.append(newTimeIconWrapperDiv, newTempIconWrapperDiv, newPrecipIconsWrapperDiv, newHumidityIconWrapperDiv, newWindSpeedIconWrapperDiv);
+    // newInfoIconsWrapperDiv.append(newTimeIconWrapperDiv, newTemperatureInfoP, newPrecipitationInfoP, newHumidityInfoP, newWindSpeedInfoP);
+    
+    // add time section to info wrapper
+    newInfoWrapperDiv.append(newInfoIconsWrapperDiv);
+}
+
+// addInfoIconsWrapperToInfoWrapper() HELPER FUNCTIONS
 function createIconWithTooltip(imgURL, tooltipText) {
     const icon = document.createElement("img");
     icon.classList.add("icon");
@@ -150,6 +127,49 @@ function createIconWithTooltip(imgURL, tooltipText) {
     return (iconWrapperDiv);
 }
 
+function addTooltip(parentElem, tooltipContent) {
+    const newTooltip = document.createElement("div");
+    newTooltip.classList.add("tooltip");
+    newTooltip.textContent = tooltipContent;
+    
+    parentElem.append(newTooltip);
+}
+// END addInfoIconsWrapperToInfoWrapper() HELPER FUNCTIONS
+
+
+function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
+    // create base data items for time section
+    const newTimeP = createP("time", item.date.getHours() + "u");
+    const newTempP = createP("temperature", convertKelvinToCelsius(item.temperature) + "°");
+    const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
+    const newHumidityP = createP("humidity", item.humidity + "%");
+    const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));
+    const newIconImg = document.createElement("img");
+    newIconImg.classList.add("icon");
+    newIconImg.setAttribute("src", `./images/${item.iconName}.png`);
+    newIconImg.setAttribute("alt", "icon of " + item.description);
+    
+    // create time section wrapper and insert base data items
+    const newTimeSectionDiv = document.createElement("div");
+    newTimeSectionDiv.classList.add("time-section");
+    newTimeSectionDiv.append(newIconImg, newTimeP, newTempP, newPrecipitationP, newHumidityP, newWindSpeedP);
+    
+    // add time section to info wrapper
+    InfoWrapperDiv.append(newTimeSectionDiv);
+}
+
+// addTimeSectionToInfoWrapper() HELPER FUNCTIONS
+function createP(className, content) {
+    const newP = document.createElement("p");
+    newP.classList.add(className);
+    newP.textContent = content;
+
+    return (newP);
+}
+
 function convertKelvinToCelsius(F) {
     return (Math.round(F - 273.15));
 }
+// END addTimeSectionToInfoWrapper() HELPER FUNCTIONS
+
+// END createDomElems() HELPER FUNCTIONS
