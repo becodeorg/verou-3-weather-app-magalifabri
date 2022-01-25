@@ -21,6 +21,41 @@ body {
 
 h1 {
   text-align: center;
+  margin-bottom: 10px;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  margin: 0 auto;
+  width: max-content;
+  align-items: center;
+}
+.search-bar .search-input {
+  padding: 5px 15px;
+  padding-right: 40px;
+  left: 0;
+  top: 0;
+  border-radius: 20px;
+  border: 1px solid gray;
+  font-size: inherit;
+  font-family: inherit;
+}
+.search-bar .search-button {
+  position: absolute;
+  right: 5px;
+  width: 28px;
+  height: 20px;
+  padding-left: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-left: 1px solid gray;
+}
+.search-bar .search-button img {
+  width: 70%;
 }
 
 .day-name {

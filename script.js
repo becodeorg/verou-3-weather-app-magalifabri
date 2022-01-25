@@ -1,4 +1,4 @@
-const searchBar = document.querySelector(".search-bar");
+const searchInput = document.querySelector(".search-input");
 const searchButton = document.querySelector(".search-button");
 const wrapperWeekDiv = document.querySelector(".wrapper-days");
 const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
@@ -23,7 +23,8 @@ window.addEventListener("keydown", event => {
 
 
 function search() {
-    const searchedLocation = searchBar.value;
+    clearWrapperWeekDiv();
+    const searchedLocation = searchInput.value;
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchedLocation}&appid=${APIkey}`)
         .then(response => response.json())
@@ -31,6 +32,16 @@ function search() {
 };
 // run search without triggering an event
 search();
+
+// search HELPER FUNCTIONS
+function clearWrapperWeekDiv() {
+    const days = wrapperWeekDiv.querySelectorAll(".day");
+    for (const day of days) {
+        day.remove();
+    }
+}
+// END search HELPER FUNCTIONS
+
 
 function processData(weatherData) {
     const parsedData = [];
