@@ -17,6 +17,21 @@ body {
     font-family: 'Roboto', sans-serif;
     font-family: 'Open Sans', sans-serif;
     user-select: none;
+
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+// .search-bar {
+
+// }
+
+.day-name {
+    margin: 30px 0px 20px;
+    text-indent: 55px;
 }
 
 .wrapper-days {
@@ -24,15 +39,13 @@ body {
     .day {
         display: flex;
         flex-direction: column;
-        padding: 10px;
+        // padding: 10px;
         
         .wrapper-info {
             display: flex;
             flex-direction: column;
             gap: 15px;
 
-            padding: 10px 0;
-            
             .time-section {
                 display: flex;
                 flex-direction: row;
@@ -85,13 +98,11 @@ body {
 }
 
 .info-icons {
-    padding-top: 5px;
-    margin-top: 25px;
-    
+    margin-left: 50px;
+
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin-left: 50px;
     
     div {
         position: relative;

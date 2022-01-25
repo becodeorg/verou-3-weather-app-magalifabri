@@ -83,6 +83,7 @@ function addDay() {
 
 function addDayNameToDay(dayName, newDayWrapperDiv) {
     const dayHeader = document.createElement("h2");
+    dayHeader.classList.add("day-name");
     dayHeader.textContent = dayName;
     newDayWrapperDiv.append(dayHeader);
 }
