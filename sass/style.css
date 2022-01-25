@@ -148,4 +148,10 @@ h1 {
   font-family: "Roboto", sans-serif;
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.css.map */

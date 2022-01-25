@@ -33,19 +33,29 @@ function search() {
 // run search without triggering an event
 search();
 
-// search HELPER FUNCTIONS
+// search() HELPER FUNCTIONS
 function clearWrapperWeekDiv() {
     const days = wrapperWeekDiv.querySelectorAll(".day");
     for (const day of days) {
         day.remove();
     }
+    
+    const errorMsg = wrapperWeekDiv.querySelector(".error-message");
+    if (errorMsg) {
+        errorMsg.remove();
+    }
 }
-// END search HELPER FUNCTIONS
+// END search() HELPER FUNCTIONS
 
 
 function processData(weatherData) {
-    const parsedData = [];
+    if (weatherData.cod !== "200") {
+        showErrorMsg(weatherData.message);
+        return ;
+    }
 
+    const parsedData = [];
+    console.log(weatherData);
     for (listItem of weatherData.list) {
         const item = {};
         item["summary"] = listItem.weather[0].main;
@@ -62,6 +72,16 @@ function processData(weatherData) {
 
     createDomElems(parsedData);
 }
+
+// processData() HELPER FUNCTIONS
+function showErrorMsg(msg) {
+    const errorMsg = document.createElement("p");
+    errorMsg.classList.add("error-message");
+    errorMsg.textContent = msg;
+    wrapperWeekDiv.append(errorMsg);
+}
+// END processData() HELPER FUNCTIONS
+
 
 function createDomElems(parsedData) {
     let lastHandledDay = "";
