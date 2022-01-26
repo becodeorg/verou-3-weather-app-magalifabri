@@ -13,7 +13,7 @@ const daysOfTheWeek = [
     "Saturday"
 ]
 
-searchButton.addEventListener("click", search);
+searchButton.addEventListener("click", fetch5day3hourAPIData);
 window.addEventListener("keydown", event => {
     if (event.key === "Enter") {
         search();
@@ -21,18 +21,18 @@ window.addEventListener("keydown", event => {
 });
 
 
-function search() {
+function fetch5day3hourAPIData() {
     clearWrapperWeekDiv();
     const searchedLocation = searchInput.value;
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchedLocation}&appid=${APIkey}`)
         .then(response => response.json())
-        .then(weatherData => (processData(weatherData)))
+        .then(weatherData => (parse5day3hourAPIData(weatherData)));
 };
-// run search without triggering an event
-search();
+// run search without triggering an event to not start with an empty page
+fetch5day3hourAPIData();
 
-// search() HELPER FUNCTIONS
+// fetch5day3hourAPIData() HELPER FUNCTIONS
 function clearWrapperWeekDiv() {
     const days = wrapperWeekDiv.querySelectorAll(".day");
     for (const day of days) {
@@ -44,22 +44,93 @@ function clearWrapperWeekDiv() {
         errorMsg.remove();
     }
 }
-// END search() HELPER FUNCTIONS
+// END fetch5day3hourAPIData() HELPER FUNCTIONS
 
+function fetchOneCallAPIData(weatherData) {
+    const lat = weatherData.city.coord.lat;
+    const lon = weatherData.city.coord.lon;
 
-function processData(weatherData) {
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${APIkey}`)
+        .then(response => response.json())
+        .then(weatherData => (parseOneCallAPIData(weatherData)));
+}
+
+function parseOneCallAPIData(weatherData) {
+    const parsedDataCurrent = [];
+    // console.log(weatherData);
+    
+    parsedDataCurrent["summary"] = weatherData.current.weather[0].main;
+    parsedDataCurrent["description"] = weatherData.current.weather[0].description;
+    parsedDataCurrent["dateObject"] = new Date(weatherData.current.dt * 1000);
+    parsedDataCurrent["temperature"] = weatherData.current.temp;
+    parsedDataCurrent["humidity"] = weatherData.current.humidity;
+    // parsedDataCurrent["clouds"] = listItem.clouds.all;
+    parsedDataCurrent["precip"] = weatherData.current.pop;
+    parsedDataCurrent["iconName"] = weatherData.current.weather[0].icon;
+    parsedDataCurrent["wind-speed"] = weatherData.current.wind_speed; // meter/sec
+    // console.log(parsedDataCurrent);
+
+    createCurrentWeatherDomElems(parsedDataCurrent);
+}
+
+function createCurrentWeatherDomElems(data) {
+    // day, time, description
+    const day = daysOfTheWeek[data.dateObject.getDay()];
+    const hours = data.dateObject.getHours();
+    let minutes = data.dateObject.getMinutes();
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    const description = data.description;
+    
+    const summaryP = document.createElement("p");
+    summaryP.classList.add("summary");
+    summaryP.textContent = `${day} ${hours}:${minutes}, ${description}`;
+    
+    // icon (big) | temp (big) | | list: precip, humid, wind
+    
+    const bigIconImg = document.createElement("img");
+    bigIconImg.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
+    bigIconImg.setAttribute("alt", "icon of " + data.description);
+    
+    // const temp = createP("temp", convertKelvinToCelsius(data.temperature) + "°C");
+    const temp = document.createElement("p");
+    temp.classList.add("temp");
+    temp.innerHTML = `${convertKelvinToCelsius(data.temperature)}<span>°C</span>`
+
+    const precip = document.createElement("li");
+    precip.textContent = `Precip: ${data.precip | "0"}%`
+    const humidity = document.createElement("li");
+    humidity.textContent = `Humidity: ${data.humidity}%`;
+    const windSpeed = document.createElement("li");
+    windSpeed.textContent = `Wind: ${Math.round(data["wind-speed"] * 3.6)}`
+    
+    const list = document.createElement("ul");
+    list.append(precip, humidity, windSpeed);
+    
+    const dataWrapperDiv = document.createElement("div");
+    dataWrapperDiv.classList.add("data-wrapper");
+    dataWrapperDiv.append(bigIconImg, temp, list);
+
+    const currentWeatherWrapperDiv = document.querySelector(".current-weather");
+    currentWeatherWrapperDiv.append(summaryP, dataWrapperDiv);
+}
+
+function parse5day3hourAPIData(weatherData) {
     if (weatherData.cod !== "200") {
         showErrorMsg(weatherData.message);
         return ;
     }
 
+    fetchOneCallAPIData(weatherData);
+
     const parsedData = [];
-    console.log(weatherData);
+
     for (const listItem of weatherData.list) {
         const item = {};
         item["summary"] = listItem.weather[0].main;
         item["description"] = listItem.weather[0].description;
-        item["date"] = new Date(listItem.dt * 1000);
+        item["dateObject"] = new Date(listItem.dt * 1000);
         item["temperature"] = listItem.main.temp;
         item["humidity"] = listItem.main.humidity;
         item["clouds"] = listItem.clouds.all;
@@ -69,25 +140,25 @@ function processData(weatherData) {
         parsedData.push(item);
     }
 
-    createDomElems(parsedData);
+    create5day3hourDomElems(parsedData);
 }
 
-// processData() HELPER FUNCTIONS
+// parse5day3hourAPIData() HELPER FUNCTIONS
 function showErrorMsg(msg) {
     const errorMsg = document.createElement("p");
     errorMsg.classList.add("error-message");
     errorMsg.textContent = msg;
     wrapperWeekDiv.append(errorMsg);
 }
-// END processData() HELPER FUNCTIONS
+// END parse5day3hourAPIData() HELPER FUNCTIONS
 
 
-function createDomElems(parsedData) {
+function create5day3hourDomElems(parsedData) {
     let lastHandledDay = "";
     let InfoWrapperDiv;
 
     for (const item of parsedData) {
-        const dayOfCurrentItem = daysOfTheWeek[item.date.getDay()];
+        const dayOfCurrentItem = daysOfTheWeek[item.dateObject.getDay()];
         // if item pertains to a new day, create new day wrapper
         if (lastHandledDay !== dayOfCurrentItem) {
             lastHandledDay = dayOfCurrentItem;
@@ -102,7 +173,7 @@ function createDomElems(parsedData) {
     }
 }
 
-// createDomElems() HELPER FUNCTIONS
+// create5day3hourDomElems() HELPER FUNCTIONS
 function addDay() {
     const newDayWrapperDiv = document.createElement("div");
     newDayWrapperDiv.classList.add("day");
@@ -171,7 +242,7 @@ function addTooltip(parentElem, tooltipContent) {
 
 function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     // create base data items for time section
-    const newTimeP = createP("time", item.date.getHours() + "u");
+    const newTimeP = createP("time", item.dateObject.getHours() + "u");
     const newTempP = createP("temperature", convertKelvinToCelsius(item.temperature) + "°");
     const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
     const newHumidityP = createP("humidity", item.humidity + "%");
@@ -210,4 +281,4 @@ function convertKelvinToCelsius(F) {
 }
 // END addTimeSectionToInfoWrapper() HELPER FUNCTIONS
 
-// END createDomElems() HELPER FUNCTIONS
+// END create5day3hourDomElems() HELPER FUNCTIONS
