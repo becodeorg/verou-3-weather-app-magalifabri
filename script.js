@@ -19,7 +19,14 @@ window.addEventListener("keydown", event => {
         fetch5day3hourAPIData();
     }
 });
-
+searchInput.addEventListener("focus", () => {
+    const cursor = document.querySelector(".cursor");
+    cursor.style.display = "none";
+})
+searchInput.addEventListener("blur", () => {
+    const cursor = document.querySelector(".cursor");
+    cursor.style.display = "inline";
+})
 
 function fetch5day3hourAPIData() {
     resetPage();
