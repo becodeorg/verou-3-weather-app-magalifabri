@@ -125,16 +125,16 @@ function createMainDataDiv(data) {
 function createChartButtonsWrapperDiv() {
     const temperatureChartButton = document.createElement("div");
     temperatureChartButton.textContent = "temperature";
-    temperatureChartButton.classList.add("temperature-chart-button");
+    temperatureChartButton.classList.add("temperature-chart-button", "chart-button");
     temperatureChartButton.addEventListener("click", switchCharts);
     
     const precipitationChartButton = document.createElement("div");
     precipitationChartButton.textContent = "precipitation";
-    precipitationChartButton.classList.add("precipitation-chart-button");
+    precipitationChartButton.classList.add("precipitation-chart-button", "chart-button");
     precipitationChartButton.addEventListener("click", switchCharts);
     
     const chartButtonsWrapperDiv = document.createElement("div");
-    chartButtonsWrapperDiv.classList.add("chart-buttons");
+    chartButtonsWrapperDiv.classList.add("chart-buttons-wrapper");
     chartButtonsWrapperDiv.append(temperatureChartButton, precipitationChartButton);
 
     return (chartButtonsWrapperDiv)
@@ -203,20 +203,30 @@ function createTemperatureChart(weatherData) {
         options: {
             scales: {
                 y: {
+                    grid: {
+                        display: false,
+                    },
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value, index, ticks) {
-                            return value + "°C";
-                        } // add "°C" to tick labels
+                        // callback: function(value, index, ticks) {
+                        //     return value + "°C";
+                        // }, // add "°C" to tick labels
+                        callback: function(val, index) {
+                            return index % 2 === 0 ? this.getLabelForValue(val) + "°C" : '';
+                        },
                     }
                 },
                 x: {
+                    grid: {
+                        display: false,
+                    },
                     ticks: {
                         maxRotation: 0, // don't rotate tick labels
-                        callback: function(val, index) {
-                            return index % 4 === 0 ? this.getLabelForValue(val) : '';
-                        }, // only show every 4th tick label
+                        // callback: function(val, index) {
+                        //     return index % 4 === 0 ? this.getLabelForValue(val) : '';
+                        // }, // only show every 4th tick label
                         // autoSkip: false,
+                        maxTicksLimit: 6,
                     }
                 }
             },
@@ -270,24 +280,30 @@ function createPrecipitationChart(weatherData) {
         options: {
             scales: {
                 y: {
+                    grid: {
+                        display: false,
+                    },
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value, index, ticks) {
-                            return value + "%";
-                        }, // add "°C" to tick labels
+                        // callback: function(value, index, ticks) {
+                        //     return value + "%";
+                        // }, // add "°C" to tick labels
                         callback: function(val, index) {
-                            return index % 2 === 0 ? this.getLabelForValue(val) : '';
+                            return index % 2 === 0 ? this.getLabelForValue(val) + "%" : '';
                         },
                     }
                 },
                 x: {
+                    grid: {
+                        display: false,
+                    },
                     ticks: {
                         maxRotation: 0, // don't rotate tick labels
-                        callback: function(val, index) {
-                            return index % 4 === 0 ? this.getLabelForValue(val) : '';
-                        }, // only show every 4th tick label
+                        // callback: function(val, index) {
+                        //     return index % 4 === 0 ? this.getLabelForValue(val) : '';
+                        // }, // only show every 4th tick label
                         // autoSkip: false,
-                        
+                        maxTicksLimit: 6,
                     }
                 }
             },
