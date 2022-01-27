@@ -1,17 +1,22 @@
 /*
+font-family: 'Dosis', sans-serif;
+font-family: 'Josefin Sans', sans-serif;
 font-family: 'Open Sans', sans-serif;
+font-family: 'Quicksand', sans-serif;
 font-family: 'Roboto', sans-serif;
 */
 
 $black: rgb(37, 37, 37);
-$white: rgb(248, 246, 242);
+// white: rgb(248, 246, 242);
 $darkSkyBlue: rgb(28, 84, 121);
-$backgroundColor: rgba(255, 255, 255, .7);
+$backgroundColor: rgba(255, 255, 255, 0);
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    // border: 1px solid gray;
 }
 
 html {
@@ -27,8 +32,11 @@ html {
     height: 100vh;
 
     // background-image: url("https://images.unsplash.com/photo-1498496294664-d9372eb521f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
-    background-image: url("https://images.unsplash.com/photo-1506624682682-13fa0130f321?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80");
+    // background-image: url("https://images.unsplash.com/photo-1506624682682-13fa0130f321?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80");
     background-size: cover;
+    // background: linear-gradient(blue, cyan);
+    // background: linear-gradient(#5493b2, #a6bdca);
+    background: linear-gradient(#386f8a, #65a3c7);
 }
 
 // .background-ovelay {
@@ -38,7 +46,8 @@ html {
 //     left: 0;
 //     width: 100%;
 //     height: 100vh;
-//     background-color: black;
+//     background-color: rgba(0, 0, 0, 0.459);
+//     background: linear-gradient(#5493b2, #a6bdca);
 // }
 
 body {
@@ -47,9 +56,18 @@ body {
     margin: 0 auto;
     padding: 10px;
 
-    font-family: 'Open Sans', sans-serif;
+    // font-family: 'Quicksand', sans-serif;
+    font-family: 'Dosis', sans-serif;
     user-select: none;
-    color: $black;
+    color: white;
+}
+
+h1,
+h2,
+.search-input,
+.chart-button,
+.summary {
+    font-family: 'Quicksand', sans-serif;
 }
 
 header {
@@ -59,7 +77,7 @@ header {
         text-align: center;
         margin-bottom: 10px;
     
-        color: $white;
+        color: white;
         text-shadow: 0px 0px 3px black;
         font-weight: lighter;
     }
@@ -69,39 +87,52 @@ header {
     position: relative;
     display: flex;
     margin: 0 auto;
-    width: max-content;
+    $search-bar-padding-x: 20px;
+    padding: 0 $search-bar-padding-x;
+    // width: fit-content;
+    // max-width: 350px;
     align-items: center;
 
     span {
         position: absolute;
-        color: $black;
-        margin-left: 10px;
+        // margin-left: 10px;
+        background-color: rgba(255, 255, 255, 0.75);
+        width: 5px;
+        border-radius: 1px;
+        height: 60%;
+        animation: blink-animation 3s linear infinite;
     }
 
     .search-input {
-        padding: 5px 40px;
+        padding: 5px 40px 5px 15px;
         left: 0;
         top: 0;
+        width: 100%;
         
         border-radius: 20px;
         border: none;
-        border: 1px solid white;
-        background-color: $backgroundColor;
+        outline: none;
+        // border: 1px solid white;
+        background-color: transparent;
 
-        font-size: inherit;
-        font-family: inherit;
-        color: $black;
+        font-size: 2rem;
+        // font-family: inherit;
+        color: white;
+        // text-align: center;
+        text-transform: capitalize;
     }
 
     .search-button {
+        margin-right: $search-bar-padding-x;
+        // padding: inherit;
         position: absolute;
-        right: 5px;
+        right: 10px;
 
         cursor: pointer;
 
         width: 28px;
         height: 20px;
-        padding-left: 3px;
+        // padding-left: 3px;
 
         display: flex;
         align-items: center;
@@ -109,23 +140,156 @@ header {
         
         background-color: transparent;
         border: none;
-        border-left: 1px solid gray;
+        // border-left: 1px solid gray;
         
         img {
-            width: 70%;
+            width: 80%;
+            filter: invert(1);
         }
     }
 }
 
+::placeholder {
+    color: lightgray;
+}
+
+@keyframes blink-animation {
+    0% {opacity: 1;};
+    30% {opacity: 1;};
+    50% {opacity: 0;}
+    80% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+
+.current-weather * {
+    // border: 1px solid gray;
+}
+
+.current-weather {
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    border-radius: 5px;
+    background-color: $backgroundColor;
+    // background: linear-gradient(#5493b2, #a6bdca);
+
+    // border: 1px solid white;
+
+    font-size: .8rem;
+    font-weight: 500;
+
+    // & > * + * {
+    //     margin-top: 20px;
+    // }
+
+    .summary {
+        // margin-bottom: 20px;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .data-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        & > * + * {
+            margin-left: 10px;
+        }
+        margin-bottom: 40px;
+
+        img {
+            height: 75px;
+            filter: invert(1);
+        }
+
+        .temp {
+            font-size: 5rem;
+            font-weight: lighter;
+            vertical-align: top;
+
+            sup {
+                font-size: 2rem;
+                // vertical-align: top;
+            }
+        }
+
+        ul {
+            margin-left: auto;
+            list-style: none;
+            text-align: right;
+        }
+    }
+}
+
+
+.chart-buttons-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+
+    .chart-button {
+        border-bottom: 2px solid white;
+        // font-weight: bold;
+        transition: all .3s;
+        text-transform: capitalize;
+        cursor: pointer;
+        
+        &.hidden {
+            // font-weight: lighter;
+            transform: scale(.9);
+            transform-origin: 50% 100%;
+            border-bottom: 1px solid white;
+        }
+    }
+}
+
+.charts-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.chart {
+    transform: translateX(0px);
+    transition: all .5s ease;
+}
+
+.chart.temperature.hidden {
+    transform: translateX(-100%);
+}
+
+.chart.precipitation {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &.hidden {
+        transform: translateX(100%);
+    }
+}
+
+
+
+
+
+
 .day-name {
     margin: 30px 0px 20px;
-    color: $darkSkyBlue;
+    color: white;
 }
 
 .wrapper-days {
     border-radius: 5px;
     background-color: $backgroundColor;
-    border: 1px solid white;
+    // background: linear-gradient(rgb(82, 107, 126), rgb(37, 81, 107));
+    // background: linear-gradient(#5493b2, #a6bdca);
+    
+    background-attachment: fixed;
+
+    // backdrop-filter: blur(10px);
+    // border: 1px solid white;
 
 
     display: flex;
@@ -172,7 +336,7 @@ header {
     background-color: $darkSkyBlue;
     border-radius: 5px;
     
-    color: $white;
+    color: white;
     font-size: .8rem;
     font-family: 'Roboto', sans-serif;
 }
@@ -189,6 +353,7 @@ header {
         width: 70%;
         border-bottom: 1px dotted black;
         padding-bottom: 3px;
+        filter: invert(1);
     }
 
     .tooltip {
@@ -228,6 +393,7 @@ header {
             width: 80%;
             border-bottom: 1px dotted black;
             padding-bottom: 3px;
+            filter: invert(1);
         }
 
         &:hover .tooltip {
@@ -259,81 +425,3 @@ header {
 
 
 
-
-.current-weather * {
-    // border: 1px solid gray;
-}
-
-.current-weather {
-    max-width: 350px;
-    margin: 0 auto;
-    padding: 20px;
-    margin-bottom: 20px;
-
-    border-radius: 5px;
-    background-color: $backgroundColor;
-    border: 1px solid white;
-
-    font-size: .8rem;
-    font-weight: 500;
-
-    .summary {
-        margin-bottom: 10px;
-    }
-
-    .data-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        & > * + * {
-            margin-left: 20px;
-        }
-        margin-bottom: 10px;
-
-        img {
-            height: 75px;
-        }
-
-        .temp {
-            font-size: 3rem;
-            font-weight: lighter;
-
-            span {
-                font-size: 1rem;
-                vertical-align: top;
-            }
-        }
-
-        ul {
-            margin-left: auto;
-            list-style: none;
-        }
-    }
-}
-
-
-.chart-buttons-wrapper {
-    display: flex;
-    justify-content: space-evenly;
-
-    .chart-button {
-        border-bottom: 1px solid black;
-    }
-}
-
-.charts-container {
-    position: relative;
-}
-
-.chart.temperature {
-}
-
-.chart.precipitation {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.chart.hidden {
-    visibility: hidden;
-}

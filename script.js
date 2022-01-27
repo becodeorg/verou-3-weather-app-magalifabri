@@ -16,13 +16,13 @@ const daysOfTheWeek = [
 searchButton.addEventListener("click", fetch5day3hourAPIData);
 window.addEventListener("keydown", event => {
     if (event.key === "Enter") {
-        search();
+        fetch5day3hourAPIData();
     }
 });
 
 
 function fetch5day3hourAPIData() {
-    clearWrapperWeekDiv();
+    resetPage();
     const searchedLocation = searchInput.value;
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchedLocation}&appid=${APIkey}`)
@@ -33,17 +33,43 @@ function fetch5day3hourAPIData() {
 fetch5day3hourAPIData();
 
 // fetch5day3hourAPIData() HELPER FUNCTIONS
-function clearWrapperWeekDiv() {
+function resetPage() {
+    removeCurrentWeatherSection();
+    removeWeekSection();
+    removeErrorMessage();
+}
+// resetPage HELPER FUNCTIONS
+function removeCurrentWeatherSection() {
+    const currentWeatherDiv = document.querySelector(".current-weather");
+    const newCurrentWeatherDiv = document.createElement("div");
+    const mainElem = document.querySelector("main");
+    
+    if (currentWeatherDiv.children.length < 4) {
+        return ;
+    }
+
+    newCurrentWeatherDiv.classList.add("current-weather");
+    mainElem.insertBefore(newCurrentWeatherDiv, currentWeatherDiv);
+    currentWeatherDiv.remove();
+}
+
+function removeWeekSection() {
     const days = wrapperWeekDiv.querySelectorAll(".day");
+    
     for (const day of days) {
         day.remove();
     }
+}
 
-    const errorMsg = wrapperWeekDiv.querySelector(".error-message");
-    if (errorMsg) {
-        errorMsg.remove();
+function removeErrorMessage() {
+    const errorMessageP = wrapperWeekDiv.querySelector(".error-message");
+
+    if (errorMessageP) {
+        errorMessageP.remove();
     }
 }
+// END resetPage HELPER FUNCTIONS
+
 // END fetch5day3hourAPIData() HELPER FUNCTIONS
 
 function fetchOneCallAPIData(weatherData) {
@@ -77,7 +103,12 @@ function createCurrentWeatherDiv(data, weatherData) {
     const chartsContainer = createChartsContainer(weatherData);
 
     const currentWeatherWrapperDiv = document.querySelector(".current-weather");
-    currentWeatherWrapperDiv.append(summaryP, mainDataDiv, chartButtonsWrapperDiv, chartsContainer);
+    currentWeatherWrapperDiv.append(
+        summaryP,
+        mainDataDiv,
+        chartsContainer,
+        chartButtonsWrapperDiv,
+    );
 }
 // createCurrentWeatherDiv() HELPER FUNCTIONS
 function createSummaryP(data) {
@@ -98,12 +129,12 @@ function createSummaryP(data) {
 
 function createMainDataDiv(data) {
     const bigIconImg = document.createElement("img");
-    bigIconImg.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
+    bigIconImg.setAttribute("src", `./images/weather-icons-outline/${data.iconName}.png`);
     bigIconImg.setAttribute("alt", "icon of " + data.description);
     
     const temp = document.createElement("p");
     temp.classList.add("temp");
-    temp.innerHTML = `${convertKelvinToCelsius(data.temperature)}<span>°C</span>`
+    temp.innerHTML = `${convertKelvinToCelsius(data.temperature)}<sup>°</sup>`
 
     const precip = document.createElement("li");
     precip.textContent = `Precip: ${data.precip | "0"}%`
@@ -130,7 +161,7 @@ function createChartButtonsWrapperDiv() {
     
     const precipitationChartButton = document.createElement("div");
     precipitationChartButton.textContent = "precipitation";
-    precipitationChartButton.classList.add("precipitation-chart-button", "chart-button");
+    precipitationChartButton.classList.add("precipitation-chart-button", "chart-button", "hidden");
     precipitationChartButton.addEventListener("click", switchCharts);
     
     const chartButtonsWrapperDiv = document.createElement("div");
@@ -147,10 +178,18 @@ function switchCharts(event) {
     temperatureChart.classList.remove("hidden");
     precipitationChart.classList.remove("hidden");
 
+    const temperatureChartButton = document.querySelector(".temperature-chart-button");
+    const precipitationChartButton = document.querySelector(".precipitation-chart-button");
+    
+    temperatureChartButton.classList.remove("hidden");
+    precipitationChartButton.classList.remove("hidden");
+
     if (event.target.classList[0].includes("temperature")) {
         precipitationChart.classList.add("hidden");
+        precipitationChartButton.classList.add("hidden");
     } else {
         temperatureChart.classList.add("hidden");
+        temperatureChartButton.classList.add("hidden");
     }
 }
 // END createChartButtonsWrapperDiv() HELPER FUNCTIONS
@@ -180,10 +219,10 @@ function createTemperatureChart(weatherData) {
     const newCanvas = document.createElement("canvas");
     newCanvas.classList.add("chart", "temperature");
     
-    const ctx = newCanvas.getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-    gradient.addColorStop(0, 'rgba(255, 224, 122, 1)');   
-    gradient.addColorStop(1, 'rgba(255, 224, 122, 0)');
+    Chart.defaults.font.size = 16;
+    Chart.defaults.color = "white";
+    Chart.defaults.font.family = "Dosis";
+    Chart.defaults.plugins.tooltip.enabled = false;
 
     const myChart = new Chart(newCanvas, {
         type: 'line',
@@ -193,10 +232,11 @@ function createTemperatureChart(weatherData) {
                 // label: 'temperature',
                 data: temperatureData,
                 pointRadius: 0, // hide dots on line
-                borderColor: "rgba(255, 249, 230)",
-                borderWidth: 3,
+                borderColor: "white",
+                borderWidth: 2,
                 fill: true,
-                backgroundColor: gradient, // use created gradient
+                backgroundColor: "transparent",
+                // backgroundColor: gradient, // use created gradient
                 tension: 0.3, // make line more curvy
             }]
         },
@@ -205,20 +245,25 @@ function createTemperatureChart(weatherData) {
                 y: {
                     grid: {
                         display: false,
+                        drawBorder: false,
                     },
                     beginAtZero: true,
                     ticks: {
-                        // callback: function(value, index, ticks) {
-                        //     return value + "°C";
-                        // }, // add "°C" to tick labels
-                        callback: function(val, index) {
-                            return index % 2 === 0 ? this.getLabelForValue(val) + "°C" : '';
-                        },
+                        // color: "white",
+                        size: 20,
+                        callback: function(value, index, ticks) {
+                            return value + "°C";
+                        }, // add "°C" to tick labels
+                        // callback: function(val, index) {
+                        //     return index % 2 === 0 ? this.getLabelForValue(val) + "°C" : '';
+                        // },
+                        maxTicksLimit: 4,
                     }
                 },
                 x: {
                     grid: {
                         display: false,
+                        drawBorder: false,
                     },
                     ticks: {
                         maxRotation: 0, // don't rotate tick labels
@@ -258,15 +303,15 @@ function createPrecipitationChart(weatherData) {
     
     const ctx = newCanvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-    gradient.addColorStop(0, 'rgba(51, 121, 185, 1)');   
-    gradient.addColorStop(1, 'rgba(51, 121, 185, 0)');
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');   
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
     const myChart = new Chart(newCanvas, {
         type: 'bar',
         data: {
             labels: timestamps,
             datasets: [{
-                barThickness: 11,
+                barThickness: 10,
                 // label: 'temperature',
                 data: precipitationData,
                 pointRadius: 0, // hide dots on line
@@ -282,20 +327,23 @@ function createPrecipitationChart(weatherData) {
                 y: {
                     grid: {
                         display: false,
+                        drawBorder: false,
                     },
                     beginAtZero: true,
                     ticks: {
-                        // callback: function(value, index, ticks) {
-                        //     return value + "%";
-                        // }, // add "°C" to tick labels
-                        callback: function(val, index) {
-                            return index % 2 === 0 ? this.getLabelForValue(val) + "%" : '';
-                        },
+                        callback: function(value, index, ticks) {
+                            return value + "%";
+                        }, // add "°C" to tick labels
+                        // callback: function(val, index) {
+                        //     return index % 2 === 0 ? this.getLabelForValue(val) + "%" : '';
+                        // },
+                        maxTicksLimit: 4,
                     }
                 },
                 x: {
                     grid: {
                         display: false,
+                        drawBorder: false,
                     },
                     ticks: {
                         maxRotation: 0, // don't rotate tick labels
@@ -453,7 +501,7 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));
     const newWeatherIconImg = document.createElement("img");
     newWeatherIconImg.classList.add("weather-icon");
-    newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
+    newWeatherIconImg.setAttribute("src", `./images/weather-icons-outline/${item.iconName}.png`);
     newWeatherIconImg.setAttribute("alt", "icon of " + item.description);
 
     const newIconImgWrapperDiv = document.createElement("div");
