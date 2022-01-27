@@ -6,7 +6,7 @@ const wrapperWeekDiv = document.querySelector(".coming-days");
 const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
 import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
 
-const useDummyOneCallAPIData = false;
+const useDummyOneCallAPIData = true;
 
 const daysOfTheWeek = [
     "Sunday",
@@ -26,11 +26,17 @@ window.addEventListener("keydown", event => {
 });
 searchInput.addEventListener("focus", () => {
     const cursor = document.querySelector(".cursor");
+    const lookingGlassImg = document.querySelector(".search-button img");
+    
     cursor.style.display = "none";
+    lookingGlassImg.style.opacity = "1";
 })
 searchInput.addEventListener("blur", () => {
     const cursor = document.querySelector(".cursor");
+    const lookingGlassImg = document.querySelector(".search-button img");
+    
     cursor.style.display = "inline";
+    lookingGlassImg.style.opacity = ".5";
 })
 
 function fetch5day3hourAPIData() {
