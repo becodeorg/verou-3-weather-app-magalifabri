@@ -1,0 +1,136 @@
+.day-name {
+    margin: 20px 0px;
+    color: white;
+}
+
+.coming-days-bg-cnt {
+    background: linear-gradient(#386f8a, #65a3c7);
+    background-attachment: fixed;
+    border-top: 1px solid #386f8a;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.coming-days {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    .day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        
+        .wrapper-info {
+            display: flex;
+            flex-direction: column;
+            & > * + * {
+                margin-top: 15px;
+            }
+
+            .time-section {
+                display: flex;
+                flex-direction: row;
+                & > * + * {
+                    margin-left: 10px;
+                }
+                align-items: center;
+                text-align: center;
+
+                p {
+                    width: 40px;
+                }
+            }
+        }
+    }
+}
+
+.tooltip {
+    position: absolute;
+    transition: all .3s;
+    z-index: 1;
+    padding: 5px;
+    background-color: rgb(28, 84, 121);
+    border-radius: 5px;
+    font-size: .8rem;
+}
+
+// INFO ICONS & TOOLTIPS
+
+.info-icons-wrapper {
+    margin-left: 50px;
+
+    display: flex;
+    flex-direction: row;
+    & > * + * {
+        margin-left: 10px;
+    }
+    
+    .icon-wrapper {
+        position: relative;
+        width: 40px;
+        padding: 0 5px;
+
+        text-align: center;
+
+        .icon {
+            width: 80%;
+            border-bottom: 1px dotted black;
+            padding-bottom: 3px;
+            filter: invert(1);
+        }
+        
+        .tooltip {
+            width: 100px;
+            bottom: 120%;
+            left: 50%;
+            margin-left: -50px;
+            
+            transform: scaleY(0);
+            transform-origin: 50% 100%;
+        }
+
+        &:hover .tooltip {
+            transform: scaleY(1);
+        }
+        
+        &.wind .tooltip {
+            margin-left: -70px;
+        }
+    }
+}
+
+// WEATHER ICONS & TOOLTIPS
+
+.weather-icon-wrapper {
+    position: relative;
+    width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .weather-icon {
+        width: 70%;
+        border-bottom: 1px dotted black;
+        padding-bottom: 3px;
+        filter: invert(1);
+    }
+
+    .tooltip {
+        left: 100%;
+        width: max-content;
+        padding: 5px 10px;
+        
+        transform: scaleX(0);
+        transform-origin: 0% 50%;
+    }
+
+    &:hover .tooltip {
+        transform: scaleX(1);
+    }
+}
