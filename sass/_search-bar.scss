@@ -59,7 +59,8 @@ header {
         img {
             width: 75%;
             filter: invert(1);
-            opacity: .75;
+            opacity: .5;
+            transition: all .3s ease;
         }
     }
 }
