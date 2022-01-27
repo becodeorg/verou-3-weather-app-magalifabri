@@ -1,15 +1,9 @@
 /*
 font-family: 'Dosis', sans-serif;
-font-family: 'Josefin Sans', sans-serif;
-font-family: 'Open Sans', sans-serif;
 font-family: 'Quicksand', sans-serif;
-font-family: 'Roboto', sans-serif;
 */
 
-$black: rgb(37, 37, 37);
-// white: rgb(248, 246, 242);
 $darkSkyBlue: rgb(28, 84, 121);
-$backgroundColor: rgba(255, 255, 255, 0);
 
 * {
     box-sizing: border-box;
@@ -33,32 +27,20 @@ html {
 
     // background-image: url("https://images.unsplash.com/photo-1498496294664-d9372eb521f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
     // background-image: url("https://images.unsplash.com/photo-1506624682682-13fa0130f321?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80");
-    background-size: cover;
-    // background: linear-gradient(blue, cyan);
-    // background: linear-gradient(#5493b2, #a6bdca);
+    // background-size: cover;
+    
     background: linear-gradient(#386f8a, #65a3c7);
 }
 
-// .background-ovelay {
-//     z-index: -1;
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100vh;
-//     background-color: rgba(0, 0, 0, 0.459);
-//     background: linear-gradient(#5493b2, #a6bdca);
-// }
-
 body {
+    user-select: none;
+
     min-width: 350px;
     max-width: 1100px;
     margin: 0 auto;
     padding: 10px;
 
-    // font-family: 'Quicksand', sans-serif;
     font-family: 'Dosis', sans-serif;
-    user-select: none;
     color: white;
 }
 
@@ -66,73 +48,64 @@ h1,
 h2,
 .search-input,
 .chart-button,
-.summary {
+.summary,
+.tooltip {
     font-family: 'Quicksand', sans-serif;
 }
 
-header {
-    padding: 10px 0 30px;
 
-    h1 {
-        text-align: center;
-        margin-bottom: 10px;
-    
-        color: white;
-        text-shadow: 0px 0px 3px black;
-        font-weight: lighter;
-    }
+// HEADER
+
+header {
+    margin: 10px 0px 40px;
 }
 
 .search-bar {
-    position: relative;
-    display: flex;
-    margin: 0 auto;
     $search-bar-padding-x: 20px;
+
+    position: relative;
+    margin: 0 auto;
     padding: 0 $search-bar-padding-x;
-    // width: fit-content;
-    // max-width: 350px;
+    max-width: 350px;
+
+    display: flex;
     align-items: center;
 
-    span {
+    .cursor {
         position: absolute;
-        // margin-left: 10px;
+
+        width: 1px;
+        height: 80%;
         background-color: rgba(255, 255, 255, 0.75);
-        width: 5px;
         border-radius: 1px;
-        height: 60%;
+        
+        opacity: 0;
         animation: blink-animation 3s linear infinite;
+        transition: all .3s;
     }
 
     .search-input {
-        padding: 5px 40px 5px 15px;
+        padding: 5px 40px 5px 5px;
         left: 0;
         top: 0;
         width: 100%;
         
-        border-radius: 20px;
         border: none;
         outline: none;
-        // border: 1px solid white;
         background-color: transparent;
 
         font-size: 2rem;
-        // font-family: inherit;
         color: white;
-        // text-align: center;
         text-transform: capitalize;
     }
 
     .search-button {
+        cursor: pointer;
         margin-right: $search-bar-padding-x;
-        // padding: inherit;
         position: absolute;
         right: 10px;
 
-        cursor: pointer;
-
-        width: 28px;
-        height: 20px;
-        // padding-left: 3px;
+        width: 30px;
 
         display: flex;
         align-items: center;
@@ -140,11 +113,11 @@ header {
         
         background-color: transparent;
         border: none;
-        // border-left: 1px solid gray;
         
         img {
-            width: 80%;
+            width: 75%;
             filter: invert(1);
+            opacity: .75;
         }
     }
 }
@@ -154,39 +127,25 @@ header {
 }
 
 @keyframes blink-animation {
-    0% {opacity: 1;};
-    30% {opacity: 1;};
-    50% {opacity: 0;}
-    80% {opacity: 0;}
-    100% {opacity: 1;}
+    0% {opacity: 0;};
+    30% {opacity: 0;};
+    50% {opacity: 1;}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
 }
 
 
-.current-weather * {
-    // border: 1px solid gray;
-}
+// CURRENT WEATHER SECTION
 
 .current-weather {
     max-width: 350px;
     margin: 0 auto;
     padding: 20px;
-    margin-bottom: 20px;
 
-    border-radius: 5px;
-    background-color: $backgroundColor;
-    // background: linear-gradient(#5493b2, #a6bdca);
-
-    // border: 1px solid white;
-
-    font-size: .8rem;
+    font-size: .9rem;
     font-weight: 500;
 
-    // & > * + * {
-    //     margin-top: 20px;
-    // }
-
     .summary {
-        // margin-bottom: 20px;
         text-align: center;
         font-weight: 700;
     }
@@ -212,7 +171,6 @@ header {
 
             sup {
                 font-size: 2rem;
-                // vertical-align: top;
             }
         }
 
@@ -225,26 +183,7 @@ header {
 }
 
 
-.chart-buttons-wrapper {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 10px;
-
-    .chart-button {
-        border-bottom: 2px solid white;
-        // font-weight: bold;
-        transition: all .3s;
-        text-transform: capitalize;
-        cursor: pointer;
-        
-        &.hidden {
-            // font-weight: lighter;
-            transform: scale(.9);
-            transform-origin: 50% 100%;
-            border-bottom: 1px solid white;
-        }
-    }
-}
+// CHARTS
 
 .charts-container {
     position: relative;
@@ -271,9 +210,29 @@ header {
 }
 
 
+// CHART BUTTONS
+
+.chart-buttons-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+
+    .chart-button {
+        border-bottom: 2px solid white;
+        transition: all .3s;
+        text-transform: capitalize;
+        cursor: pointer;
+        
+        &.hidden {
+            transform: scale(.9);
+            transform-origin: 50% 100%;
+            border-bottom: 1px solid white;
+        }
+    }
+}
 
 
-
+// COMING DAYS SECTION
 
 .day-name {
     margin: 30px 0px 20px;
@@ -281,17 +240,6 @@ header {
 }
 
 .wrapper-days {
-    border-radius: 5px;
-    background-color: $backgroundColor;
-    // background: linear-gradient(rgb(82, 107, 126), rgb(37, 81, 107));
-    // background: linear-gradient(#5493b2, #a6bdca);
-    
-    background-attachment: fixed;
-
-    // backdrop-filter: blur(10px);
-    // border: 1px solid white;
-
-
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -306,7 +254,6 @@ header {
         .wrapper-info {
             display: flex;
             flex-direction: column;
-            // gap: 15px;
             & > * + * {
                 margin-top: 15px;
             }
@@ -314,7 +261,6 @@ header {
             .time-section {
                 display: flex;
                 flex-direction: row;
-                // gap: 10px;
                 & > * + * {
                     margin-left: 10px;
                 }
@@ -330,54 +276,23 @@ header {
 }
 
 .tooltip {
+    position: absolute;
+    transform: scaleY(0);
     transition: all .3s;
     z-index: 1;
     padding: 5px;
     background-color: $darkSkyBlue;
     border-radius: 5px;
-    
-    color: white;
     font-size: .8rem;
-    font-family: 'Roboto', sans-serif;
 }
 
-.weather-icon-wrapper {
-    position: relative;
-    width: 40px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .weather-icon {
-        width: 70%;
-        border-bottom: 1px dotted black;
-        padding-bottom: 3px;
-        filter: invert(1);
-    }
-
-    .tooltip {
-        position: absolute;
-        left: 100%;
-        width: max-content;
-
-        transform: scaleX(0);
-        transform-origin: 0% 50%;
-
-        padding: 5px 10px;
-    }
-
-    &:hover .tooltip {
-        transform: scaleX(1);
-    }
-}
+// COMING DAYS SECTION - INFO ICONS & TOOLTIPS
 
 .info-icons-wrapper {
     margin-left: 50px;
 
     display: flex;
     flex-direction: row;
-    // gap: 10px;
     & > * + * {
         margin-left: 10px;
     }
@@ -395,33 +310,61 @@ header {
             padding-bottom: 3px;
             filter: invert(1);
         }
-
-        &:hover .tooltip {
-            transform: scaleY(1);
-        }
-
+        
         .tooltip {
-            position: absolute;
             width: 100px;
             bottom: 120%;
             left: 50%;
             margin-left: -50px;
-
-            transform: scaleY(0);
+            
             transform-origin: 50% 100%;
         }
 
+        &:hover .tooltip {
+            transform: scaleY(1);
+        }
+        
         &.wind .tooltip {
             margin-left: -70px;
         }
     }
 }
 
-.error-message {
-    color: red;
-    font-weight: bold;
-    text-align: center;
+// COMING DAYS SECTION - WEATHER ICONS & TOOLTIPS
+
+.weather-icon-wrapper {
+    position: relative;
+    width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .weather-icon {
+        width: 70%;
+        border-bottom: 1px dotted black;
+        padding-bottom: 3px;
+        filter: invert(1);
+    }
+
+    .tooltip {
+        left: 100%;
+        width: max-content;
+        transform-origin: 0% 50%;
+        padding: 5px 10px;
+    }
+
+    &:hover .tooltip {
+        transform: scaleX(1);
+    }
 }
 
 
+// ERROR MESSAGE
 
+.error-message {
+    color: rgb(255, 125, 125);
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
