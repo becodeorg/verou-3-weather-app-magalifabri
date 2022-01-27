@@ -1,8 +1,13 @@
 const searchInput = document.querySelector(".search-input");
 const searchButton = document.querySelector(".search-button");
-const wrapperWeekDiv = document.querySelector(".wrapper-days");
+const wrapperWeekDiv = document.querySelector(".coming-days");
 
-const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
+// const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
+const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
+import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
+
+const useDummyOneCallAPIData = false;
+
 const daysOfTheWeek = [
     "Sunday",
     "Monday",
@@ -80,12 +85,16 @@ function removeErrorMessage() {
 // END fetch5day3hourAPIData() HELPER FUNCTIONS
 
 function fetchOneCallAPIData(weatherData) {
-    const lat = weatherData.city.coord.lat;
-    const lon = weatherData.city.coord.lon;
-
-    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${APIkey}`)
-        .then(response => response.json())
-        .then(weatherData => (parseOneCallAPIData(weatherData)));
+    if (useDummyOneCallAPIData) {
+        parseOneCallAPIData(dummyOneCallAPIData);
+    } else {
+        const lat = weatherData.city.coord.lat;
+        const lon = weatherData.city.coord.lon;
+    
+        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${APIkey}`)
+            .then(response => response.json())
+            .then(weatherData => (parseOneCallAPIData(weatherData)));
+    }
 }
 
 function parseOneCallAPIData(weatherData) {
