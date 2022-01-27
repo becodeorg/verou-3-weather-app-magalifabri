@@ -19,15 +19,15 @@ html {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(#386f8a, #65a3c7);
+  background-image: url("https://images.unsplash.com/photo-1520985244272-9d0b8067a4ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80");
+  background-size: cover;
+  background-position: center center;
 }
 
 body {
   user-select: none;
   min-width: 350px;
-  max-width: 1100px;
   margin: 0 auto;
-  padding: 10px;
   font-family: "Dosis", sans-serif;
   color: white;
 }
@@ -42,7 +42,7 @@ h2,
 }
 
 header {
-  margin: 10px 0px 40px;
+  margin: 40px 0px 40px;
 }
 
 .search-bar {
@@ -57,7 +57,7 @@ header {
   position: absolute;
   width: 1px;
   height: 80%;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.85);
   border-radius: 1px;
   opacity: 0;
   animation: blink-animation 3s linear infinite;
@@ -115,15 +115,19 @@ header {
   }
 }
 .current-weather {
-  max-width: 350px;
+  background: linear-gradient(#386f8a79, #65a3c7);
+  background-attachment: fixed;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  max-width: 325px;
   margin: 0 auto;
+  margin-bottom: 50px;
   padding: 20px;
   font-size: 0.9rem;
   font-weight: 500;
 }
 .current-weather .summary {
   text-align: center;
-  font-weight: 700;
 }
 .current-weather .data-wrapper {
   display: flex;
@@ -193,39 +197,48 @@ header {
 }
 
 .day-name {
-  margin: 30px 0px 20px;
+  margin: 20px 0px;
   color: white;
 }
 
-.wrapper-days {
+.coming-days-bg-cnt {
+  background: linear-gradient(#386f8a, #65a3c7);
+  background-attachment: fixed;
+  border-top: 1px solid #386f8a;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.coming-days {
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
-.wrapper-days .day {
+.coming-days .day {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
 }
-.wrapper-days .day .wrapper-info {
+.coming-days .day .wrapper-info {
   display: flex;
   flex-direction: column;
 }
-.wrapper-days .day .wrapper-info > * + * {
+.coming-days .day .wrapper-info > * + * {
   margin-top: 15px;
 }
-.wrapper-days .day .wrapper-info .time-section {
+.coming-days .day .wrapper-info .time-section {
   display: flex;
   flex-direction: row;
   align-items: center;
   text-align: center;
 }
-.wrapper-days .day .wrapper-info .time-section > * + * {
+.coming-days .day .wrapper-info .time-section > * + * {
   margin-left: 10px;
 }
-.wrapper-days .day .wrapper-info .time-section p {
+.coming-days .day .wrapper-info .time-section p {
   width: 40px;
 }
 
