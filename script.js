@@ -136,7 +136,7 @@ function createSummaryP(data) {
 
 function createMainDataDiv(data) {
     const bigIconImg = document.createElement("img");
-    bigIconImg.setAttribute("src", `./images/weather-icons-outline/${data.iconName}.png`);
+    bigIconImg.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
     bigIconImg.setAttribute("alt", "icon of " + data.description);
     
     const temp = document.createElement("p");
@@ -460,11 +460,11 @@ function addInfoWrapperToDay(newDayWrapperDiv) {
 
 function addInfoIconsWrapperToInfoWrapper(newInfoWrapperDiv) {
     // insert info icons with tooltip at start of rows
-    const newTimeIconWrapperDiv = createIconWithTooltip("./images/icons/three-o-clock-clock.png", "time of day", "time");
-    const newTempIconWrapperDiv = createIconWithTooltip("./images/icons/thermometer.png", "temperature in Celsius", "temp");
-    const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/icons/rainy.png", "probability of precipitation", "pop");
-    const newHumidityIconWrapperDiv = createIconWithTooltip("./images/icons/humidity.png", "humidity", "humid");
-    const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/icons/wind.png", "wind speed in km/h", "wind");
+    const newTimeIconWrapperDiv = createIconWithTooltip("./images/info-icons/three-o-clock-clock.png", "time of day", "time");
+    const newTempIconWrapperDiv = createIconWithTooltip("./images/info-icons/thermometer.png", "temperature in Celsius", "temp");
+    const newPrecipIconsWrapperDiv = createIconWithTooltip("./images/info-icons/rainy.png", "probability of precipitation", "pop");
+    const newHumidityIconWrapperDiv = createIconWithTooltip("./images/info-icons/humidity.png", "humidity", "humid");
+    const newWindSpeedIconWrapperDiv = createIconWithTooltip("./images/info-icons/wind.png", "wind speed in km/h", "wind");
 
     // create time section wrapper and insert base data items
     const newInfoIconsWrapperDiv = document.createElement("div");
@@ -508,7 +508,7 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));
     const newWeatherIconImg = document.createElement("img");
     newWeatherIconImg.classList.add("weather-icon");
-    newWeatherIconImg.setAttribute("src", `./images/weather-icons-outline/${item.iconName}.png`);
+    newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
     newWeatherIconImg.setAttribute("alt", "icon of " + item.description);
 
     const newIconImgWrapperDiv = document.createElement("div");
