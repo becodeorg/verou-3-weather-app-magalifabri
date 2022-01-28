@@ -2,14 +2,10 @@
 
 ## Exercise Description
 *"You have been sent abroad for a 10-month work mission. Your family and friends back home ask you about the weather where you live ALL. THE. TIME.*
-*Enough is enough, you decide to build a small web application for them so that you can free your time to talk about more interesting topics."*
-
-[View entire exercise here](https://github.com/becodeorg/gnt-verou-3/tree/main/2.The-Hill/03.Weather-App)
+*Enough is enough, you decide to build a small web application for them ..."* [read more](https://github.com/becodeorg/gnt-verou-3/tree/main/2.The-Hill/03.Weather-App)
 
 View result on [GitHub Pages](https://becodeorg.github.io/verou-3-weather-app-magalifabri/)
 
-
----
 
 ## Credits
 
