@@ -149,15 +149,17 @@ header {
   margin-top: 10px;
 }
 .chart-buttons-wrapper .chart-button {
-  border-bottom: 2px solid white;
+  border-bottom: 1px solid white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   transition: all 0.3s;
   text-transform: capitalize;
   cursor: pointer;
 }
 .chart-buttons-wrapper .chart-button.hidden {
-  transform: scale(0.9);
+  transform: scale(0.85);
   transform-origin: 50% 100%;
   border-bottom: 1px solid white;
+  text-shadow: none;
 }
 
 .day-name {
