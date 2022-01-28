@@ -51,6 +51,7 @@ searchInput.addEventListener("blur", () => {
 fetch5day3hourAPIData();
 
 function fetch5day3hourAPIData() {
+    removeWeekSection();
     removeErrorMessage();
     const searchedLocation = searchInput.value;
 
@@ -58,6 +59,17 @@ function fetch5day3hourAPIData() {
         .then(response => response.json())
         .then(weatherData => (parse5day3hourAPIData(weatherData)));
 };
+
+function removeWeekSection() {
+    const days = comingDaysDiv.querySelectorAll(".day");
+    
+    for (const day of days) {
+        if (day.classList.contains("template")) {
+            continue ;
+        }
+        day.remove();
+    }
+}
 
 function removeErrorMessage() {
     const errorMessageP = comingDaysDiv.querySelector(".error-message");
