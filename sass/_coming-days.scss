@@ -27,7 +27,7 @@
         align-items: center;
         padding: 30px;
         
-        .wrapper-info {
+        .table {
             display: flex;
             flex-direction: column;
             & > * + * {
@@ -52,8 +52,13 @@
 }
 
 .tooltip {
+    user-select: none;
     position: absolute;
+
     transition: all .3s;
+    opacity: 0;
+    transform: scale(0);
+
     z-index: 1;
     padding: 5px;
     background-color: rgb(28, 84, 121);
@@ -92,12 +97,12 @@
             left: 50%;
             margin-left: -50px;
             
-            transform: scaleY(0);
             transform-origin: 50% 100%;
         }
 
         &:hover .tooltip {
-            transform: scaleY(1);
+            transform: scale(1);
+            opacity: 1;
         }
         
         &.wind .tooltip {
@@ -128,11 +133,11 @@
         width: max-content;
         padding: 5px 10px;
 
-        transform: scaleX(0);
         transform-origin: 0% 50%;
     }
 
     &:hover .tooltip {
-        transform: scaleX(1);
+        transform: scale(1);
+        opacity: 1;
     }
 }

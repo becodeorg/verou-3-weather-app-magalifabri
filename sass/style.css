@@ -191,29 +191,32 @@ header {
   align-items: center;
   padding: 30px;
 }
-.coming-days .day .wrapper-info {
+.coming-days .day .table {
   display: flex;
   flex-direction: column;
 }
-.coming-days .day .wrapper-info > * + * {
+.coming-days .day .table > * + * {
   margin-top: 15px;
 }
-.coming-days .day .wrapper-info .time-section {
+.coming-days .day .table .time-section {
   display: flex;
   flex-direction: row;
   align-items: center;
   text-align: center;
 }
-.coming-days .day .wrapper-info .time-section > * + * {
+.coming-days .day .table .time-section > * + * {
   margin-left: 10px;
 }
-.coming-days .day .wrapper-info .time-section p {
+.coming-days .day .table .time-section p {
   width: 40px;
 }
 
 .tooltip {
+  user-select: none;
   position: absolute;
   transition: all 0.3s;
+  opacity: 0;
+  transform: scale(0);
   z-index: 1;
   padding: 5px;
   background-color: #1c5479;
@@ -246,11 +249,11 @@ header {
   bottom: 120%;
   left: 50%;
   margin-left: -50px;
-  transform: scaleY(0);
   transform-origin: 50% 100%;
 }
 .info-icons-wrapper .icon-wrapper:hover .tooltip {
-  transform: scaleY(1);
+  transform: scale(1);
+  opacity: 1;
 }
 .info-icons-wrapper .icon-wrapper.wind .tooltip {
   margin-left: -70px;
@@ -273,11 +276,11 @@ header {
   left: 100%;
   width: max-content;
   padding: 5px 10px;
-  transform: scaleX(0);
   transform-origin: 0% 50%;
 }
 .weather-icon-wrapper:hover .tooltip {
-  transform: scaleX(1);
+  transform: scale(1);
+  opacity: 1;
 }
 
 /*
@@ -312,7 +315,6 @@ html {
   }
 }
 body {
-  user-select: none;
   min-width: 350px;
   margin: 0 auto;
   font-family: "Dosis", sans-serif;
