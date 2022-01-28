@@ -75,7 +75,11 @@ function drawTemperatureChart(weatherData) {
     Chart.defaults.font.family = "Dosis";
     Chart.defaults.plugins.tooltip.enabled = false;
 
-    const myChart = new Chart(currentWeatherDOMElems.temperatureChart, {
+    if (currentWeatherDOMElems.temperatureChart.chartInstance) {
+        currentWeatherDOMElems.temperatureChart.chartInstance.destroy();
+    }
+
+    currentWeatherDOMElems.temperatureChart.chartInstance = new Chart(currentWeatherDOMElems.temperatureChart, {
         type: 'line',
         data: {
             labels: timestamps,
@@ -136,12 +140,16 @@ function drawPrecipitationChart(weatherData) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
+    if (currentWeatherDOMElems.precipitationChart.chartInstance) {
+        currentWeatherDOMElems.precipitationChart.chartInstance.destroy();
+    }
+
     const ctx = currentWeatherDOMElems.precipitationChart.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, 0, 150);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');   
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-    const myChart = new Chart(currentWeatherDOMElems.precipitationChart, {
+    currentWeatherDOMElems.precipitationChart.chartInstance = new Chart(currentWeatherDOMElems.precipitationChart, {
         type: 'bar',
         data: {
             labels: timestamps,
