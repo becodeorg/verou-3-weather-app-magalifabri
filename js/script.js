@@ -10,7 +10,7 @@ const wrapperWeekDiv = document.querySelector(".coming-days");
 // const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
 
-const useDummyOneCallAPIData = false;
+const useDummyOneCallAPIData = true;
 
 const daysOfTheWeek = [
     "Sunday",
@@ -63,25 +63,10 @@ fetch5day3hourAPIData();
 
 // fetch5day3hourAPIData() HELPER FUNCTIONS
 function resetPage() {
-    removeCurrentWeatherSection();
     removeWeekSection();
     removeErrorMessage();
 }
 // resetPage HELPER FUNCTIONS
-function removeCurrentWeatherSection() {
-    const currentWeatherDiv = document.querySelector(".current-weather");
-    const newCurrentWeatherDiv = document.createElement("div");
-    const mainElem = document.querySelector("main");
-    
-    if (currentWeatherDiv.children.length < 4) {
-        return ;
-    }
-
-    newCurrentWeatherDiv.classList.add("current-weather");
-    mainElem.insertBefore(newCurrentWeatherDiv, currentWeatherDiv);
-    currentWeatherDiv.remove();
-}
-
 function removeWeekSection() {
     const days = wrapperWeekDiv.querySelectorAll(".day");
     
@@ -101,6 +86,8 @@ function removeErrorMessage() {
 
 // END fetch5day3hourAPIData() HELPER FUNCTIONS
 
+
+
 function fetchOneCallAPIData(weatherData) {
     if (useDummyOneCallAPIData) {
         parseOneCallAPIData(dummyOneCallAPIData);
@@ -115,38 +102,51 @@ function fetchOneCallAPIData(weatherData) {
 }
 
 function parseOneCallAPIData(weatherData) {
-    const parsedDataCurrent = [];
+    const currentWeatherData = [];
     
-    parsedDataCurrent["summary"] = weatherData.current.weather[0].main;
-    parsedDataCurrent["description"] = weatherData.current.weather[0].description;
-    parsedDataCurrent["dateObject"] = new Date(weatherData.current.dt * 1000);
-    parsedDataCurrent["temperature"] = weatherData.current.temp;
-    parsedDataCurrent["humidity"] = weatherData.current.humidity;
-    parsedDataCurrent["precip"] = weatherData.current.pop;
-    parsedDataCurrent["iconName"] = weatherData.current.weather[0].icon;
-    parsedDataCurrent["wind-speed"] = weatherData.current.wind_speed; // meter/sec
+    currentWeatherData["summary"] = weatherData.current.weather[0].main;
+    currentWeatherData["description"] = weatherData.current.weather[0].description;
+    currentWeatherData["dateObject"] = new Date(weatherData.current.dt * 1000);
+    currentWeatherData["temperature"] = weatherData.current.temp;
+    currentWeatherData["humidity"] = weatherData.current.humidity;
+    currentWeatherData["precip"] = weatherData.current.pop;
+    currentWeatherData["iconName"] = weatherData.current.weather[0].icon;
+    currentWeatherData["wind-speed"] = weatherData.current.wind_speed; // meter/sec
     
-    createCurrentWeatherDiv(parsedDataCurrent, weatherData);
+    createCurrentWeatherDiv(currentWeatherData, weatherData);
 }
 
 
 
-function createCurrentWeatherDiv(data, weatherData) {
-    const summaryP = createSummaryP(data);
-    const mainDataDiv = createMainDataDiv(data);
-    const chartButtonsWrapperDiv = createChartButtonsWrapperDiv();
-    const chartsContainer = createChartsContainer(weatherData);
+const currentWeatherDOMElems = {
+    summaryP: document.querySelector(".summary"),
+    
+    bigWeatherIcon: document.querySelector(".big-weather-icon"),
+    bigTemperatureNumber: document.querySelector(".big-temperature-number"),
+    
+    precipitationLi: document.querySelector(".data-list .precipitation"),
+    humidityLi: document.querySelector(".data-list .humidity"),
+    windLi: document.querySelector(".data-list .wind"),
+    
+    temperatureChart: document.querySelector(".chart.temperature"),
+    precipitationChart: document.querySelector(".chart.precipitation"),
 
-    const currentWeatherWrapperDiv = document.querySelector(".current-weather");
-    currentWeatherWrapperDiv.append(
-        summaryP,
-        mainDataDiv,
-        chartsContainer,
-        chartButtonsWrapperDiv,
-    );
+    temperatureChartButton: document.querySelector(".temperature-chart-button"),
+    precipitationChartButton: document.querySelector(".precipitation-chart-button"),
+}
+// console.log(currentWeatherDOMElems);
+
+function createCurrentWeatherDiv(currentWeatherData, allWeatherData) {
+    fillSummaryP(currentWeatherData);
+    fillMainDataDiv(currentWeatherData);
+    drawTemperatureChart(allWeatherData);
+    drawPrecipitationChart(allWeatherData);
+
+    currentWeatherDOMElems.temperatureChartButton.addEventListener("click", switchCharts);
+    currentWeatherDOMElems.precipitationChartButton.addEventListener("click", switchCharts);
 }
 // createCurrentWeatherDiv() HELPER FUNCTIONS
-function createSummaryP(data) {
+function fillSummaryP(data) {
     const day = daysOfTheWeek[data.dateObject.getDay()];
     const hours = data.dateObject.getHours();
     let minutes = data.dateObject.getMinutes();
@@ -155,92 +155,21 @@ function createSummaryP(data) {
     }
     const description = data.description;
     
-    const summaryP = document.createElement("p");
-    summaryP.classList.add("summary");
-    summaryP.textContent = `${day} ${hours}:${minutes}, ${description}`;
-    
-    return (summaryP);
+    currentWeatherDOMElems.summaryP.textContent = `${day} ${hours}:${minutes}, ${description}`;
 }
 
-function createMainDataDiv(data) {
-    const bigIconImg = document.createElement("img");
-    bigIconImg.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
-    bigIconImg.setAttribute("alt", "icon of " + data.description);
+function fillMainDataDiv(data) {
+    currentWeatherDOMElems.bigWeatherIcon.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
+    currentWeatherDOMElems.bigWeatherIcon.setAttribute("alt", "icon of " + data.description);
     
-    const temp = document.createElement("p");
-    temp.classList.add("temp");
-    temp.innerHTML = `${convertKelvinToCelsius(data.temperature)}<sup>°</sup>`
+    currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${convertKelvinToCelsius(data.temperature)}<sup>°</sup>`
 
-    const precip = document.createElement("li");
-    precip.textContent = `Precip: ${data.precip | "0"}%`
-    const humidity = document.createElement("li");
-    humidity.textContent = `Humidity: ${data.humidity}%`;
-    const windSpeed = document.createElement("li");
-    windSpeed.textContent = `Wind: ${Math.round(data["wind-speed"] * 3.6)} km/h`;
-    
-    const list = document.createElement("ul");
-    list.append(precip, humidity, windSpeed);
-    
-    const dataWrapperDiv = document.createElement("div");
-    dataWrapperDiv.classList.add("data-wrapper");
-    dataWrapperDiv.append(bigIconImg, temp, list);
-
-    return (dataWrapperDiv);
+    currentWeatherDOMElems.precipitationLi.textContent = `Precip: ${data.precip | "0"}%`;
+    currentWeatherDOMElems.humidityLi.textContent = `Humidity: ${data.humidity}%`;
+    currentWeatherDOMElems.windLi.textContent = `Wind: ${Math.round(data["wind-speed"] * 3.6)} km/h`;
 }
 
-function createChartButtonsWrapperDiv() {
-    const temperatureChartButton = document.createElement("div");
-    temperatureChartButton.textContent = "temperature";
-    temperatureChartButton.classList.add("temperature-chart-button", "chart-button");
-    temperatureChartButton.addEventListener("click", switchCharts);
-    
-    const precipitationChartButton = document.createElement("div");
-    precipitationChartButton.textContent = "precipitation";
-    precipitationChartButton.classList.add("precipitation-chart-button", "chart-button", "hidden");
-    precipitationChartButton.addEventListener("click", switchCharts);
-    
-    const chartButtonsWrapperDiv = document.createElement("div");
-    chartButtonsWrapperDiv.classList.add("chart-buttons-wrapper");
-    chartButtonsWrapperDiv.append(temperatureChartButton, precipitationChartButton);
-
-    return (chartButtonsWrapperDiv)
-}
-// createChartButtonsWrapperDiv() HELPER FUNCTIONS
-function switchCharts(event) {
-    const temperatureChart = document.querySelector(".temperature.chart");
-    const precipitationChart = document.querySelector(".precipitation.chart");
-    
-    temperatureChart.classList.remove("hidden");
-    precipitationChart.classList.remove("hidden");
-
-    const temperatureChartButton = document.querySelector(".temperature-chart-button");
-    const precipitationChartButton = document.querySelector(".precipitation-chart-button");
-    
-    temperatureChartButton.classList.remove("hidden");
-    precipitationChartButton.classList.remove("hidden");
-
-    if (event.target.classList[0].includes("temperature")) {
-        precipitationChart.classList.add("hidden");
-        precipitationChartButton.classList.add("hidden");
-    } else {
-        temperatureChart.classList.add("hidden");
-        temperatureChartButton.classList.add("hidden");
-    }
-}
-// END createChartButtonsWrapperDiv() HELPER FUNCTIONS
-
-function createChartsContainer(weatherData) {
-    const temperatureChart = createTemperatureChart(weatherData);
-    const precipitationChart = createPrecipitationChart(weatherData);
-
-    const chartsContainer = document.createElement("div");
-    chartsContainer.classList.add("charts-container");
-    chartsContainer.append(temperatureChart, precipitationChart);
-
-    return (chartsContainer);
-}
-// createChartsContainer() HELPER FUNCTIONS
-function createTemperatureChart(weatherData) {
+function drawTemperatureChart(weatherData) {
     const temperatureData = [];
     const timestamps = [];
     
@@ -251,15 +180,12 @@ function createTemperatureChart(weatherData) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
-    const newCanvas = document.createElement("canvas");
-    newCanvas.classList.add("chart", "temperature");
-    
     Chart.defaults.font.size = 16;
     Chart.defaults.color = "white";
     Chart.defaults.font.family = "Dosis";
     Chart.defaults.plugins.tooltip.enabled = false;
 
-    const myChart = new Chart(newCanvas, {
+    const myChart = new Chart(currentWeatherDOMElems.temperatureChart, {
         type: 'line',
         data: {
             labels: timestamps,
@@ -317,11 +243,9 @@ function createTemperatureChart(weatherData) {
             }
         }
     });
-
-    return (newCanvas);
 }
 
-function createPrecipitationChart(weatherData) {
+function drawPrecipitationChart(weatherData) {
     const precipitationData = [];
     const timestamps = [];
     
@@ -333,15 +257,12 @@ function createPrecipitationChart(weatherData) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
-    const newCanvas = document.createElement("canvas");
-    newCanvas.classList.add("chart", "precipitation", "hidden");
-    
-    const ctx = newCanvas.getContext("2d");
+    const ctx = currentWeatherDOMElems.precipitationChart.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, 0, 150);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');   
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-    const myChart = new Chart(newCanvas, {
+    const myChart = new Chart(currentWeatherDOMElems.precipitationChart, {
         type: 'bar',
         data: {
             labels: timestamps,
@@ -354,6 +275,7 @@ function createPrecipitationChart(weatherData) {
                 // borderWidth: 3,
                 fill: true,
                 backgroundColor: gradient, // use created gradient
+                // backgroundColor: "white",
                 tension: 0.3, // make line more curvy
             }]
         },
@@ -397,14 +319,25 @@ function createPrecipitationChart(weatherData) {
             }
         }
     });
-
-    return (newCanvas);
 }
-// END createChartsContainer() HELPER FUNCTIONS
+
+function switchCharts(event) {
+    currentWeatherDOMElems.temperatureChart.classList.remove("hidden");
+    currentWeatherDOMElems.precipitationChart.classList.remove("hidden");
+
+    currentWeatherDOMElems.temperatureChartButton.classList.remove("hidden");
+    currentWeatherDOMElems.precipitationChartButton.classList.remove("hidden");
+
+    if (event.target.classList[0].includes("temperature")) {
+        currentWeatherDOMElems.precipitationChart.classList.add("hidden");
+        currentWeatherDOMElems.precipitationChartButton.classList.add("hidden");
+    } else {
+        currentWeatherDOMElems.temperatureChart.classList.add("hidden");
+        currentWeatherDOMElems.temperatureChartButton.classList.add("hidden");
+    }
+}
 
 // END createCurrentWeatherDiv() HELPER FUNCTIONS
-
-
 
 
 

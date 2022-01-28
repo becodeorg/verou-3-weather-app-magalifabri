@@ -91,24 +91,25 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 .current-weather .data-wrapper > * + * {
   margin-left: 10px;
 }
-.current-weather .data-wrapper img {
+.current-weather .data-wrapper .big-weather-icon {
   height: 75px;
   filter: invert(1);
 }
-.current-weather .data-wrapper .temp {
+.current-weather .data-wrapper .big-temperature-number {
   font-size: 5rem;
   font-weight: lighter;
   vertical-align: top;
 }
-.current-weather .data-wrapper .temp sup {
+.current-weather .data-wrapper .big-temperature-number sup {
   font-size: 2rem;
 }
-.current-weather .data-wrapper ul {
+.current-weather .data-wrapper .data-list {
   margin-left: auto;
   list-style: none;
   text-align: right;

@@ -28,8 +28,25 @@
     </header>
     
     <main>
-        <div class="current-weather">
-            <!-- JS GENERATED -->
+        <div class="current-weather"> <!-- JS-FILLED -->
+            <p class="summary"></p>
+            <div class="data-wrapper">
+                <img class="big-weather-icon" src="" alt="">
+                <p class="big-temperature-number"><sup>°</sup></p>
+                <ul class="data-list">
+                    <li class="precipitation"></li>
+                    <li class="humidity"></li>
+                    <li class="wind"></li>
+                </ul>
+            </div>
+            <div class="charts-container">
+                <canvas class="chart temperature"></canvas>
+                <canvas class="chart precipitation hidden"></canvas>
+            </div>
+            <div class="chart-buttons-wrapper">
+                <div class="temperature-chart-button chart-button">temperature</div>
+                <div class="precipitation-chart-button chart-button hidden">precipitation</div>
+            </div>
         </div>
 
         <div class="coming-days-bg-cnt">

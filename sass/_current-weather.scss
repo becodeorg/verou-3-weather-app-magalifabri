@@ -23,14 +23,15 @@
         & > * + * {
             margin-left: 10px;
         }
-        margin-bottom: 40px;
+        margin-bottom: 20px;
+        margin-top: 20px;
 
-        img {
+        .big-weather-icon {
             height: 75px;
             filter: invert(1);
         }
 
-        .temp {
+        .big-temperature-number {
             font-size: 5rem;
             font-weight: lighter;
             vertical-align: top;
@@ -40,7 +41,7 @@
             }
         }
 
-        ul {
+        .data-list {
             margin-left: auto;
             list-style: none;
             text-align: right;
