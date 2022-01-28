@@ -6,7 +6,7 @@ const wrapperWeekDiv = document.querySelector(".coming-days");
 const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
 import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
 
-const useDummyOneCallAPIData = true;
+const useDummyOneCallAPIData = false;
 
 const daysOfTheWeek = [
     "Sunday",
