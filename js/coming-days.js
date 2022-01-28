@@ -30,7 +30,7 @@ function addDay(dayTemplate) {
 
 function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     // create base data items for time section
-    const newTimeP = createP("time", item.dateObject.getHours() + "u");
+    const newTimeP = createP("time", item.dateObject.getHours() + "h");
     const newTempP = createP("temperature", Math.round(item.temperature) + "°");
     const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
     const newHumidityP = createP("humidity", item.humidity + "%");
