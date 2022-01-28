@@ -8,8 +8,7 @@ import { createCurrentWeatherDiv } from "./current-weather.js";
 
 const wrapperWeekDiv = document.querySelector(".coming-days");
 
-// const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
-const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
+const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 
 const useDummyOneCallAPIData = false;
 
