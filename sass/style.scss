@@ -30,7 +30,12 @@ html {
 
     background-image: url("https://images.unsplash.com/photo-1520985244272-9d0b8067a4ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80");
     background-size: cover;
-    background-position: center center;
+    background-position: center top; // anchored to top, because opening the keyboard (on phone) won't affect the viewed portion of the image as much then
+}
+@media only screen and (min-width: 768px) {
+    .background {
+        background-position: center center; // centered, because on bigger screens, otherwise only the top will show, which is somewhat boring
+    }
 }
 
 body {
@@ -67,7 +72,7 @@ footer {
 // FOOTER
 
 footer {
-    background: linear-gradient(#185969, #124856);
+    background: linear-gradient(-90deg, #124856, #185969);
     border-top: 1px solid #124856;
     padding: 50px 30px 50px 10vw;
     & > * + * {
@@ -80,5 +85,17 @@ footer {
         font-weight: 500;
         text-decoration: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
+}
+
+@media (hover: hover) {
+    a {
+        transition: all .3s ease;
+    }
+    a:hover {
+        color: #fac5b0;
+    }
+    .chart-button:hover {
+        border-color: #fac5b0 !important;
     }
 }
