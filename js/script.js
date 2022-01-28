@@ -1,12 +1,16 @@
-const searchInput = document.querySelector(".search-input");
-const searchButton = document.querySelector(".search-button");
+// IMPORTS
+
+import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
+
+
+// GLOBAL VARIABLES
+
 const wrapperWeekDiv = document.querySelector(".coming-days");
 
 // const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
-import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
 
-const useDummyOneCallAPIData = false;
+const useDummyOneCallAPIData = true;
 
 const daysOfTheWeek = [
     "Sunday",
@@ -18,12 +22,16 @@ const daysOfTheWeek = [
     "Saturday"
 ]
 
-searchButton.addEventListener("click", fetch5day3hourAPIData);
+
+// EVENT LISTENERS
+
+document.querySelector(".search-button").addEventListener("click", fetch5day3hourAPIData);
 window.addEventListener("keydown", event => {
     if (event.key === "Enter") {
         fetch5day3hourAPIData();
     }
 });
+const searchInput = document.querySelector(".search-input");
 searchInput.addEventListener("focus", () => {
     const cursor = document.querySelector(".cursor");
     const lookingGlassImg = document.querySelector(".search-button img");
@@ -38,6 +46,9 @@ searchInput.addEventListener("blur", () => {
     cursor.style.display = "inline";
     lookingGlassImg.style.opacity = ".5";
 })
+
+
+// FUNCTIONS
 
 function fetch5day3hourAPIData() {
     resetPage();
@@ -117,6 +128,8 @@ function parseOneCallAPIData(weatherData) {
     
     createCurrentWeatherDiv(parsedDataCurrent, weatherData);
 }
+
+
 
 function createCurrentWeatherDiv(data, weatherData) {
     const summaryP = createSummaryP(data);
@@ -392,6 +405,9 @@ function createPrecipitationChart(weatherData) {
 // END createCurrentWeatherDiv() HELPER FUNCTIONS
 
 
+
+
+
 function parse5day3hourAPIData(weatherData) {
     if (weatherData.cod !== "200") {
         showErrorMsg(weatherData.message);
@@ -427,6 +443,8 @@ function showErrorMsg(msg) {
     wrapperWeekDiv.append(errorMsg);
 }
 // END parse5day3hourAPIData() HELPER FUNCTIONS
+
+
 
 
 function create5day3hourDomElems(parsedData) {
