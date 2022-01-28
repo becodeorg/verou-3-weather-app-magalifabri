@@ -1,6 +1,7 @@
 // IMPORTS
 
 import dummyOneCallAPIData from "./dummyOneCallAPIData.js";
+import { createCurrentWeatherDiv } from "./current-weather.js";
 
 
 // GLOBAL VARIABLES
@@ -10,9 +11,9 @@ const wrapperWeekDiv = document.querySelector(".coming-days");
 // const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 const APIkey = "fffc3391a59ea8cd3c2d9714fe2bab32";
 
-const useDummyOneCallAPIData = true;
+const useDummyOneCallAPIData = false;
 
-const daysOfTheWeek = [
+export const daysOfTheWeek = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -87,7 +88,6 @@ function removeErrorMessage() {
 // END fetch5day3hourAPIData() HELPER FUNCTIONS
 
 
-
 function fetchOneCallAPIData(weatherData) {
     if (useDummyOneCallAPIData) {
         parseOneCallAPIData(dummyOneCallAPIData);
@@ -115,231 +115,6 @@ function parseOneCallAPIData(weatherData) {
     
     createCurrentWeatherDiv(currentWeatherData, weatherData);
 }
-
-
-
-const currentWeatherDOMElems = {
-    summaryP: document.querySelector(".summary"),
-    
-    bigWeatherIcon: document.querySelector(".big-weather-icon"),
-    bigTemperatureNumber: document.querySelector(".big-temperature-number"),
-    
-    precipitationLi: document.querySelector(".data-list .precipitation"),
-    humidityLi: document.querySelector(".data-list .humidity"),
-    windLi: document.querySelector(".data-list .wind"),
-    
-    temperatureChart: document.querySelector(".chart.temperature"),
-    precipitationChart: document.querySelector(".chart.precipitation"),
-
-    temperatureChartButton: document.querySelector(".temperature-chart-button"),
-    precipitationChartButton: document.querySelector(".precipitation-chart-button"),
-}
-// console.log(currentWeatherDOMElems);
-
-function createCurrentWeatherDiv(currentWeatherData, allWeatherData) {
-    fillSummaryP(currentWeatherData);
-    fillMainDataDiv(currentWeatherData);
-    drawTemperatureChart(allWeatherData);
-    drawPrecipitationChart(allWeatherData);
-
-    currentWeatherDOMElems.temperatureChartButton.addEventListener("click", switchCharts);
-    currentWeatherDOMElems.precipitationChartButton.addEventListener("click", switchCharts);
-}
-// createCurrentWeatherDiv() HELPER FUNCTIONS
-function fillSummaryP(data) {
-    const day = daysOfTheWeek[data.dateObject.getDay()];
-    const hours = data.dateObject.getHours();
-    let minutes = data.dateObject.getMinutes();
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    const description = data.description;
-    
-    currentWeatherDOMElems.summaryP.textContent = `${day} ${hours}:${minutes}, ${description}`;
-}
-
-function fillMainDataDiv(data) {
-    currentWeatherDOMElems.bigWeatherIcon.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
-    currentWeatherDOMElems.bigWeatherIcon.setAttribute("alt", "icon of " + data.description);
-    
-    currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${convertKelvinToCelsius(data.temperature)}<sup>°</sup>`
-
-    currentWeatherDOMElems.precipitationLi.textContent = `Precip: ${data.precip | "0"}%`;
-    currentWeatherDOMElems.humidityLi.textContent = `Humidity: ${data.humidity}%`;
-    currentWeatherDOMElems.windLi.textContent = `Wind: ${Math.round(data["wind-speed"] * 3.6)} km/h`;
-}
-
-function drawTemperatureChart(weatherData) {
-    const temperatureData = [];
-    const timestamps = [];
-    
-    for (let i = 0; i < 24; i++) {
-        temperatureData.push(convertKelvinToCelsius(weatherData.hourly[i].temp));
-    }
-    for (let i = 0; i < 24; i++) {
-        timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
-    }
-
-    Chart.defaults.font.size = 16;
-    Chart.defaults.color = "white";
-    Chart.defaults.font.family = "Dosis";
-    Chart.defaults.plugins.tooltip.enabled = false;
-
-    const myChart = new Chart(currentWeatherDOMElems.temperatureChart, {
-        type: 'line',
-        data: {
-            labels: timestamps,
-            datasets: [{
-                // label: 'temperature',
-                data: temperatureData,
-                pointRadius: 0, // hide dots on line
-                borderColor: "white",
-                borderWidth: 2,
-                fill: true,
-                backgroundColor: "transparent",
-                // backgroundColor: gradient, // use created gradient
-                tension: 0.3, // make line more curvy
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        // color: "white",
-                        size: 20,
-                        callback: function(value, index, ticks) {
-                            return value + "°C";
-                        }, // add "°C" to tick labels
-                        // callback: function(val, index) {
-                        //     return index % 2 === 0 ? this.getLabelForValue(val) + "°C" : '';
-                        // },
-                        maxTicksLimit: 4,
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        maxRotation: 0, // don't rotate tick labels
-                        // callback: function(val, index) {
-                        //     return index % 4 === 0 ? this.getLabelForValue(val) : '';
-                        // }, // only show every 4th tick label
-                        // autoSkip: false,
-                        maxTicksLimit: 6,
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false // hide legend
-                }
-            }
-        }
-    });
-}
-
-function drawPrecipitationChart(weatherData) {
-    const precipitationData = [];
-    const timestamps = [];
-    
-    for (let i = 0; i < 24; i++) {
-        precipitationData.push(weatherData.hourly[i].pop * 100);
-        // console.log(weatherData.hourly[i].pop);
-    }
-    for (let i = 0; i < 24; i++) {
-        timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
-    }
-
-    const ctx = currentWeatherDOMElems.precipitationChart.getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');   
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-    const myChart = new Chart(currentWeatherDOMElems.precipitationChart, {
-        type: 'bar',
-        data: {
-            labels: timestamps,
-            datasets: [{
-                barThickness: 10,
-                // label: 'temperature',
-                data: precipitationData,
-                pointRadius: 0, // hide dots on line
-                // borderColor: "rgba(255, 249, 230)",
-                // borderWidth: 3,
-                fill: true,
-                backgroundColor: gradient, // use created gradient
-                // backgroundColor: "white",
-                tension: 0.3, // make line more curvy
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value, index, ticks) {
-                            return value + "%";
-                        }, // add "°C" to tick labels
-                        // callback: function(val, index) {
-                        //     return index % 2 === 0 ? this.getLabelForValue(val) + "%" : '';
-                        // },
-                        maxTicksLimit: 4,
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        maxRotation: 0, // don't rotate tick labels
-                        // callback: function(val, index) {
-                        //     return index % 4 === 0 ? this.getLabelForValue(val) : '';
-                        // }, // only show every 4th tick label
-                        // autoSkip: false,
-                        maxTicksLimit: 6,
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false // hide legend
-                }
-            }
-        }
-    });
-}
-
-function switchCharts(event) {
-    currentWeatherDOMElems.temperatureChart.classList.remove("hidden");
-    currentWeatherDOMElems.precipitationChart.classList.remove("hidden");
-
-    currentWeatherDOMElems.temperatureChartButton.classList.remove("hidden");
-    currentWeatherDOMElems.precipitationChartButton.classList.remove("hidden");
-
-    if (event.target.classList[0].includes("temperature")) {
-        currentWeatherDOMElems.precipitationChart.classList.add("hidden");
-        currentWeatherDOMElems.precipitationChartButton.classList.add("hidden");
-    } else {
-        currentWeatherDOMElems.temperatureChart.classList.add("hidden");
-        currentWeatherDOMElems.temperatureChartButton.classList.add("hidden");
-    }
-}
-
-// END createCurrentWeatherDiv() HELPER FUNCTIONS
-
-
 
 function parse5day3hourAPIData(weatherData) {
     if (weatherData.cod !== "200") {
@@ -376,8 +151,6 @@ function showErrorMsg(msg) {
     wrapperWeekDiv.append(errorMsg);
 }
 // END parse5day3hourAPIData() HELPER FUNCTIONS
-
-
 
 
 function create5day3hourDomElems(parsedData) {
@@ -500,7 +273,7 @@ function createP(className, content) {
     return (newP);
 }
 
-function convertKelvinToCelsius(F) {
+export function convertKelvinToCelsius(F) {
     return (Math.round(F - 273.15));
 }
 // END addTimeSectionToInfoWrapper() HELPER FUNCTIONS
