@@ -191,6 +191,9 @@ header {
   align-items: center;
   padding: 30px;
 }
+.coming-days .day.template {
+  display: none;
+}
 .coming-days .day .table {
   display: flex;
   flex-direction: column;

@@ -1,8 +1,6 @@
 // IMPORTS
 
 import { daysOfTheWeek } from "./script.js";
-import { convertKelvinToCelsius } from "./script.js";
-
 
 // GLOBAL VARIABLES
 
@@ -52,7 +50,7 @@ function fillMainDataDiv(data) {
     currentWeatherDOMElems.bigWeatherIcon.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
     currentWeatherDOMElems.bigWeatherIcon.setAttribute("alt", "icon of " + data.description);
     
-    currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${convertKelvinToCelsius(data.temperature)}<sup>°</sup>`
+    currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${Math.round(data.temperature)}<sup>°</sup>`
 
     currentWeatherDOMElems.precipitationLi.textContent = `Precip: ${data.precip | "0"}%`;
     currentWeatherDOMElems.humidityLi.textContent = `Humidity: ${data.humidity}%`;
@@ -64,7 +62,7 @@ function drawTemperatureChart(weatherData) {
     const timestamps = [];
     
     for (let i = 0; i < 24; i++) {
-        temperatureData.push(convertKelvinToCelsius(weatherData.hourly[i].temp));
+        temperatureData.push(Math.round(weatherData.hourly[i].temp));
     }
     for (let i = 0; i < 24; i++) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");

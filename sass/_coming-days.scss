@@ -22,6 +22,10 @@
     justify-content: space-evenly;
 
     .day {
+        &.template {
+            display: none;
+        }
+        
         display: flex;
         flex-direction: column;
         align-items: center;
