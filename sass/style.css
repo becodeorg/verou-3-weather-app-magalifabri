@@ -98,21 +98,37 @@ header {
   margin-left: 10px;
 }
 .current-weather .data-wrapper .big-weather-icon {
-  height: 75px;
+  height: 65px;
   filter: invert(1);
+  margin-left: auto;
 }
 .current-weather .data-wrapper .big-temperature-number {
   font-size: 5rem;
   font-weight: lighter;
   vertical-align: top;
+  margin-right: auto;
 }
 .current-weather .data-wrapper .big-temperature-number sup {
   font-size: 2rem;
 }
 .current-weather .data-wrapper .data-list {
-  margin-left: auto;
   list-style: none;
-  text-align: right;
+}
+.current-weather .data-wrapper .data-list li {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+.current-weather .data-wrapper .data-list li img {
+  width: 20px;
+  filter: invert(1);
+  margin: 5px;
+}
+.current-weather .data-wrapper .data-list li .unit {
+  font-size: 0.6rem;
+}
+.current-weather .data-wrapper .data-list li.wind .unit {
+  margin-left: 3px;
 }
 
 @media only screen and (max-height: 600px) {

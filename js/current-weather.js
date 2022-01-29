@@ -10,9 +10,9 @@ const currentWeatherDOMElems = {
     bigWeatherIcon: document.querySelector(".big-weather-icon"),
     bigTemperatureNumber: document.querySelector(".big-temperature-number"),
     
-    precipitationLi: document.querySelector(".data-list .precipitation"),
-    humidityLi: document.querySelector(".data-list .humidity"),
-    windLi: document.querySelector(".data-list .wind"),
+    precipitationLi: document.querySelector(".data-list .precipitation .number"),
+    humidityLi: document.querySelector(".data-list .humidity .number"),
+    windLi: document.querySelector(".data-list .wind .number"),
     
     temperatureChart: document.querySelector(".chart.temperature"),
     precipitationChart: document.querySelector(".chart.precipitation"),
@@ -52,9 +52,9 @@ function fillMainDataDiv(data) {
     
     currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${Math.round(data.temperature)}<sup>°</sup>`
 
-    currentWeatherDOMElems.precipitationLi.textContent = `Precip: ${data.precip | "0"}%`;
-    currentWeatherDOMElems.humidityLi.textContent = `Humidity: ${data.humidity}%`;
-    currentWeatherDOMElems.windLi.textContent = `Wind: ${Math.round(data["wind-speed"] * 3.6)} km/h`;
+    currentWeatherDOMElems.precipitationLi.textContent = data.precip | "0";
+    currentWeatherDOMElems.humidityLi.textContent = data.humidity;
+    currentWeatherDOMElems.windLi.textContent = Math.round(data["wind-speed"] * 3.6);
 }
 
 function drawTemperatureChart(weatherData) {
