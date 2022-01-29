@@ -78,6 +78,7 @@ function drawTemperatureChart(weatherData) {
     }
 
     currentWeatherDOMElems.temperatureChart.chartInstance = new Chart(currentWeatherDOMElems.temperatureChart, {
+        plugins: [ChartDataLabels],
         type: 'line',
         data: {
             labels: timestamps,
@@ -89,9 +90,30 @@ function drawTemperatureChart(weatherData) {
                 fill: true,
                 backgroundColor: "transparent",
                 tension: 0.3, // make line more curvy
+                
+                datalabels: {
+                    align: "top",
+                    padding: {
+                        left: 20,
+                        bottom: 10,
+                        right: 20,
+                    },
+                    display: "auto",
+                    formatter: value => value + "°",
+                }
             }]
         },
         options: {
+            hover: {
+                mode: null,
+            },
+            layout: {
+                padding: {
+                    top: 20,
+                    left: 10,
+                    right: 10,
+                },
+            },
             scales: {
                 y: {
                     grid: {
@@ -100,11 +122,7 @@ function drawTemperatureChart(weatherData) {
                     },
                     beginAtZero: true,
                     ticks: {
-                        size: 20,
-                        callback: function(value, index, ticks) {
-                            return value + "°C";
-                        }, // add "°C" to tick labels
-                        maxTicksLimit: 4,
+                        display: false,
                     }
                 },
                 x: {
@@ -142,12 +160,8 @@ function drawPrecipitationChart(weatherData) {
         currentWeatherDOMElems.precipitationChart.chartInstance.destroy();
     }
 
-    const ctx = currentWeatherDOMElems.precipitationChart.getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');   
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
     currentWeatherDOMElems.precipitationChart.chartInstance = new Chart(currentWeatherDOMElems.precipitationChart, {
+        plugins: [ChartDataLabels],
         type: 'bar',
         data: {
             labels: timestamps,
@@ -156,11 +170,32 @@ function drawPrecipitationChart(weatherData) {
                 data: precipitationData,
                 pointRadius: 0, // hide dots on line
                 fill: true,
-                backgroundColor: gradient, // use created gradient
+                backgroundColor: "rgba(255, 255, 255, .3)", // use created gradient
                 tension: 0.3, // make line more curvy
+                
+                datalabels: {
+                    anchor: "end",
+                    align: "top",
+                    padding: {
+                        left: 5,
+                        right: 5,
+                    },
+                    display: "auto",
+                    formatter: value => value > 0 ? value + "%" : "",
+                }
             }]
         },
         options: {
+            hover: {
+                mode: null,
+            },
+            layout: {
+                padding: {
+                    top: 20,
+                    left: 10,
+                    right: 10,
+                },
+            },
             scales: {
                 y: {
                     grid: {
@@ -169,10 +204,7 @@ function drawPrecipitationChart(weatherData) {
                     },
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value, index, ticks) {
-                            return value + "%";
-                        }, // add "°C" to tick labels
-                        maxTicksLimit: 4,
+                        display: false,
                     }
                 },
                 x: {
