@@ -44,6 +44,12 @@ searchInput.addEventListener("blur", () => {
     lookingGlassImg.style.opacity = ".5";
 })
 
+window.addEventListener("scroll", () => {
+    const scrolledPx = window.scrollY;
+    const background = document.querySelector(".background");
+    background.style.top = - (scrolledPx * .5) + "px";
+})
+
 
 // FUNCTIONS
 
