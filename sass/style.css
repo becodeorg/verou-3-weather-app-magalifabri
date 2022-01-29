@@ -322,6 +322,9 @@ body {
   margin: 0 auto;
   font-family: "Dosis", sans-serif;
   color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,
@@ -339,6 +342,7 @@ footer {
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
+  margin: auto 0;
 }
 
 footer {

@@ -61,7 +61,7 @@ function fetch5day3hourAPIData() {
 };
 
 function removeWeekSection() {
-    const days = comingDaysDiv.querySelectorAll(".day");
+    const days = document.querySelectorAll(".day");
     
     for (const day of days) {
         if (day.classList.contains("template")) {
@@ -72,10 +72,12 @@ function removeWeekSection() {
 }
 
 function removeErrorMessage() {
-    const errorMessageP = comingDaysDiv.querySelector(".error-message");
+    const errorMessageP = document.querySelector(".error-message");
 
     if (errorMessageP) {
         errorMessageP.remove();
+        const mainElem = document.querySelector("main");
+        mainElem.style.display = "block";
     }
 }
 
@@ -117,7 +119,11 @@ function showErrorMsg(msg) {
     const errorMsg = document.createElement("p");
     errorMsg.classList.add("error-message");
     errorMsg.textContent = msg;
-    comingDaysDiv.append(errorMsg);
+    
+    document.body.insertBefore(errorMsg, document.body.children[2]);
+    
+    const mainElem = document.querySelector("main");
+    mainElem.style.display = "none";
 }
 
 function fetchOneCallAPIData(weatherData) {
