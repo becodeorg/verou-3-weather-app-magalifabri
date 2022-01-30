@@ -49,12 +49,21 @@
             li {
                 display: flex;
                 align-items: center;
-                justify-content: right;
+                justify-content: left;
                 
-                img {
+                .icon {
                     width: 20px;
                     filter: invert(1);
                     margin: 5px;
+                }
+
+                &.wind-direction .icon {
+                    width: 25px;
+                }
+
+                .arrow {
+                    width: 20px;
+                    filter: invert(1);
                 }
 
                 .unit {

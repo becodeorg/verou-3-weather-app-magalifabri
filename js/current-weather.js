@@ -11,8 +11,8 @@ const currentWeatherDOMElems = {
     bigTemperatureNumber: document.querySelector(".big-temperature-number"),
     
     precipitationLi: document.querySelector(".data-list .precipitation .number"),
-    humidityLi: document.querySelector(".data-list .humidity .number"),
     windLi: document.querySelector(".data-list .wind .number"),
+    windDirectionLi: document.querySelector(".data-list .wind-direction .arrow"),
     
     temperatureChart: document.querySelector(".chart.temperature"),
     precipitationChart: document.querySelector(".chart.precipitation"),
@@ -53,8 +53,8 @@ function fillMainDataDiv(data) {
     currentWeatherDOMElems.bigTemperatureNumber.innerHTML = `${Math.round(data.temperature)}<sup>°</sup>`
 
     currentWeatherDOMElems.precipitationLi.textContent = data.precip | "0";
-    currentWeatherDOMElems.humidityLi.textContent = data.humidity;
     currentWeatherDOMElems.windLi.textContent = Math.round(data["wind-speed"] * 3.6);
+    currentWeatherDOMElems.windDirectionLi.style.transform = `rotate(${-90 + (Math.abs(data["wind-direction"] - 180))}deg)`;
 }
 
 function fillTemperatureChart(weatherData) {

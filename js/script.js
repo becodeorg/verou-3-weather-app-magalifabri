@@ -61,7 +61,6 @@ solution: check where .coming-days starts and set that as the background image's
 window.onload = setBgImgHeight();
 function setBgImgHeight() {
     const comingDaysBgCnt = document.querySelector(".coming-days-bg-cnt");
-    console.log(comingDaysBgCnt.offsetTop);
     document.documentElement.style.setProperty("--comingDaysOffsetTop", comingDaysBgCnt.offsetTop + 40 + "px");
 }
 
@@ -106,7 +105,6 @@ function parse5day3hourAPIData(weatherData) {
 
     fetchOneCallAPIData(weatherData);
 
-    const todaysDate = new Date().getDate();
     const parsedData = [];
 
     for (const listItem of weatherData.list) {
@@ -120,6 +118,7 @@ function parse5day3hourAPIData(weatherData) {
         item["precip"] = listItem.pop;
         item["iconName"] = listItem.weather[0].icon;
         item["wind-speed"] = listItem.wind.speed; // meter/sec
+        item["wind-direction"] = listItem.wind.deg;
         parsedData.push(item);
     }
 
@@ -161,6 +160,7 @@ function parseOneCallAPIData(weatherData) {
     currentWeatherData["precip"] = weatherData.current.pop;
     currentWeatherData["iconName"] = weatherData.current.weather[0].icon;
     currentWeatherData["wind-speed"] = weatherData.current.wind_speed; // meter/sec
+    currentWeatherData["wind-direction"] = weatherData.current.wind_deg;
     
     createCurrentWeatherDiv(currentWeatherData, weatherData);
 }

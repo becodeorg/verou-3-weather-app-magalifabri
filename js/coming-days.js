@@ -35,16 +35,13 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     const newTimeP = createP("time", item.dateObject.getHours() + "h");
     const newTempP = createP("temperature", Math.round(item.temperature) + "°");
     const newPrecipitationP = createP("precipitation", Math.round(item.precip * 100) + "%");
-    const newHumidityP = createP("humidity", item.humidity + "%");
     const newWindSpeedP = createP("wind-speed", Math.round(item["wind-speed"] * 3.6));    
     const newIconImgWrapperDiv = createNewIconImgWrapperDiv(item);
-
 
     const newWindDirectionImg = document.createElement("img");
     newWindDirectionImg.classList.add("wind-direction");
     newWindDirectionImg.setAttribute("src", "./images/right-arrow.png");
     newWindDirectionImg.style.transform = `rotate(${-90 + (Math.abs(item["wind-direction"] - 180))}deg)`;
-
 
     // create time section wrapper and insert base data items
     const newTimeSectionDiv = document.createElement("div");

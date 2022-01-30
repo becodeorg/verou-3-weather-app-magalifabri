@@ -130,12 +130,19 @@ header {
 .current-weather .data-wrapper .data-list li {
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: left;
 }
-.current-weather .data-wrapper .data-list li img {
+.current-weather .data-wrapper .data-list li .icon {
   width: 20px;
   filter: invert(1);
   margin: 5px;
+}
+.current-weather .data-wrapper .data-list li.wind-direction .icon {
+  width: 25px;
+}
+.current-weather .data-wrapper .data-list li .arrow {
+  width: 20px;
+  filter: invert(1);
 }
 .current-weather .data-wrapper .data-list li .unit {
   font-size: 0.6rem;
