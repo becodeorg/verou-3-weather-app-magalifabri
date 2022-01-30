@@ -240,8 +240,12 @@ header {
 .coming-days .day .table .time-section > * + * {
   margin-left: 10px;
 }
-.coming-days .day .table .time-section p {
+.coming-days .day .table .time-section > * {
   width: 40px;
+}
+.coming-days .day .table .time-section .wind-direction {
+  filter: invert(1);
+  padding: 0 10px;
 }
 
 .tooltip {
@@ -258,7 +262,7 @@ header {
 }
 
 .info-icons-wrapper {
-  margin-left: 50px;
+  margin-left: 100px;
   display: flex;
   flex-direction: row;
 }
@@ -288,13 +292,12 @@ header {
   transform: scale(1);
   opacity: 1;
 }
-.info-icons-wrapper .icon-wrapper.wind .tooltip {
+.info-icons-wrapper .icon-wrapper.wind-direction .tooltip {
   margin-left: -70px;
 }
 
 .weather-icon-wrapper {
   position: relative;
-  width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;

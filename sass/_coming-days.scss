@@ -47,8 +47,13 @@
                 align-items: center;
                 text-align: center;
 
-                p {
+                & > * {
                     width: 40px;
+                }
+
+                .wind-direction {
+                    filter: invert(1);
+                    padding: 0 10px;
                 }
             }
         }
@@ -73,7 +78,7 @@
 // INFO ICONS & TOOLTIPS
 
 .info-icons-wrapper {
-    margin-left: 50px;
+    margin-left: 100px;
 
     display: flex;
     flex-direction: row;
@@ -109,7 +114,7 @@
             opacity: 1;
         }
         
-        &.wind .tooltip {
+        &.wind-direction .tooltip {
             margin-left: -70px;
         }
     }
@@ -119,7 +124,6 @@
 
 .weather-icon-wrapper {
     position: relative;
-    width: 40px;
 
     display: flex;
     align-items: center;
