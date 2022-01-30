@@ -6,7 +6,6 @@ import { createComingDaysSection } from "./coming-days.js";
 
 // GLOBAL VARIABLES
 
-const comingDaysDiv = document.querySelector(".coming-days");
 const APIkey = "be9f3e7fb99ef3d5a6cdca04ec93f7de";
 const useDummyOneCallAPIData = false;
 export const daysOfTheWeek = [
@@ -54,9 +53,20 @@ window.addEventListener("scroll", () => {
 
 // FUNCTIONS
 
+/*
+issue: background image behind .search-bar and .current-weather needs to reach until .coming-days because of parallax
+using `height: 100vh` isn't enough on viewports with a height < .search-bar + .current-weather
+solution: check where .coming-days starts and set that as the background image's height
+*/
+window.onload = setBgImgHeight();
+function setBgImgHeight() {
+    const comingDaysBgCnt = document.querySelector(".coming-days-bg-cnt");
+    console.log(comingDaysBgCnt.offsetTop);
+    document.documentElement.style.setProperty("--comingDaysOffsetTop", comingDaysBgCnt.offsetTop + 40 + "px");
+}
+
 // run search without triggering an event to not start with an empty page
 fetch5day3hourAPIData();
-
 function fetch5day3hourAPIData() {
     removeWeekSection();
     removeErrorMessage();
