@@ -109,7 +109,7 @@ function drawTemperatureChart(weatherData) {
             },
             layout: {
                 padding: {
-                    top: 20,
+                    top: 30,
                     left: 10,
                     right: 10,
                 },
@@ -191,7 +191,7 @@ function drawPrecipitationChart(weatherData) {
             },
             layout: {
                 padding: {
-                    top: 20,
+                    top: 30,
                     left: 10,
                     right: 10,
                 },
