@@ -147,10 +147,8 @@ function drawPrecipitationChart(weatherData) {
     const precipitationData = [];
     const timestamps = [];
     
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 12; i++) {
         precipitationData.push(weatherData.hourly[i].pop * 100);
-    }
-    for (let i = 0; i < 24; i++) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
