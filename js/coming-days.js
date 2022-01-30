@@ -15,11 +15,13 @@ export function createComingDaysSection(parsedData) {
             dayDiv.children[0].textContent = dayOfCurrentItem;
             InfoWrapperDiv = dayDiv.children[1];
         }
-
         addTimeSectionToInfoWrapper(timeSection, InfoWrapperDiv);
     }
+    changeFirstDayNameToToday();
 }
+
 // createComingDaysSection() HELPER FUNCTIONS
+
 function addDay(dayTemplate) {
     const newDay = dayTemplate.cloneNode(true);
     newDay.classList.remove("template");
@@ -45,7 +47,9 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     // add time section to info wrapper
     InfoWrapperDiv.append(newTimeSectionDiv);
 }
+
 // addTimeSectionToInfoWrapper() HELPER FUNCTIONS
+
 function createP(className, content) {
     const newP = document.createElement("p");
     newP.classList.add(className);
@@ -77,5 +81,10 @@ function addTooltip(parentElem, tooltipContent) {
 }
 
 // END addTimeSectionToInfoWrapper() HELPER FUNCTIONS
+
+function changeFirstDayNameToToday() {
+    const firstDayNameH2 = document.querySelector(".day:not(.template) .day-name");
+    firstDayNameH2.textContent = "Today";
+}
 
 // END createComingDaysSection() HELPER FUNCTIONS
