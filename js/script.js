@@ -100,12 +100,6 @@ function parse5day3hourAPIData(weatherData) {
     const parsedData = [];
 
     for (const listItem of weatherData.list) {
-        // skip over listItems pertaining to today
-        const listItemsDate = listItem.dt_txt.slice(8, 10)
-        if (todaysDate == listItemsDate) {
-            continue ;
-        }
-
         const item = {};
         item["summary"] = listItem.weather[0].main;
         item["description"] = listItem.weather[0].description;
