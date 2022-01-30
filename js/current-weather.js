@@ -61,10 +61,8 @@ function drawTemperatureChart(weatherData) {
     const temperatureData = [];
     const timestamps = [];
     
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 12; i++) {
         temperatureData.push(Math.round(weatherData.hourly[i].temp));
-    }
-    for (let i = 0; i < 24; i++) {
         timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
