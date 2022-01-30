@@ -27,8 +27,8 @@ const currentWeatherDOMElems = {
 export function createCurrentWeatherDiv(currentWeatherData, allWeatherData) {
     fillSummaryP(currentWeatherData);
     fillMainDataDiv(currentWeatherData);
-    drawTemperatureChart(allWeatherData);
-    drawPrecipitationChart(allWeatherData);
+    fillTemperatureChart(allWeatherData);
+    fillPrecipitationChart(allWeatherData);
 
     currentWeatherDOMElems.temperatureChartButton.addEventListener("click", switchCharts);
     currentWeatherDOMElems.precipitationChartButton.addEventListener("click", switchCharts);
@@ -57,31 +57,57 @@ function fillMainDataDiv(data) {
     currentWeatherDOMElems.windLi.textContent = Math.round(data["wind-speed"] * 3.6);
 }
 
-function drawTemperatureChart(weatherData) {
-    const temperatureData = [];
-    const timestamps = [];
-    
-    for (let i = 0; i < 12; i++) {
-        temperatureData.push(Math.round(weatherData.hourly[i].temp));
-        timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
-    }
+function fillTemperatureChart(weatherData) {
+    setGlobalChartJsOptions();
+    destroyOldChart(currentWeatherDOMElems.temperatureChart.chartInstance);
+    const dataObj = selectDataForTemperatureChart(weatherData)
+    createNewTemperatureChartJsObj(dataObj);
+}
 
+// fillTemperatureChart HELPER FUNCTIONS
+function setGlobalChartJsOptions() {
     Chart.defaults.font.size = 16;
     Chart.defaults.color = "white";
     Chart.defaults.font.family = "Dosis";
     Chart.defaults.plugins.tooltip.enabled = false;
+    Chart.defaults.plugins.legend.display = false;
+    Chart.defaults.scale.beginAtZero = true;
+    Chart.defaults.scale.grid.display = false;
+    Chart.defaults.scale.grid.drawBorder = false;
+    Chart.defaults.scale.ticks.maxRotation = 0;
+    Chart.defaults.scale.ticks.maxTicksLimit = 6;
+    Chart.defaults.layout.padding = {top: 30, right: 10, left: 10};
+    Chart.defaults.hover.mode = null;
+;}
 
-    if (currentWeatherDOMElems.temperatureChart.chartInstance) {
-        currentWeatherDOMElems.temperatureChart.chartInstance.destroy();
+function destroyOldChart(chart) {
+    if (chart) {
+        chart.destroy();
+    }
+}
+
+function selectDataForTemperatureChart(weatherData) {
+    const dataObj = {
+        temperatureData: [],
+        timestamps: [],
+    };
+    
+    for (let i = 0; i < 12; i++) {
+        dataObj.temperatureData.push(Math.round(weatherData.hourly[i].temp));
+        dataObj.timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
+    return (dataObj);
+}
+
+function createNewTemperatureChartJsObj(dataObj) {
     currentWeatherDOMElems.temperatureChart.chartInstance = new Chart(currentWeatherDOMElems.temperatureChart, {
         plugins: [ChartDataLabels],
         type: 'line',
         data: {
-            labels: timestamps,
+            labels: dataObj.timestamps,
             datasets: [{
-                data: temperatureData,
+                data: dataObj.temperatureData,
                 pointRadius: 0, // hide dots on line
                 borderColor: "white",
                 borderWidth: 2,
@@ -101,73 +127,43 @@ function drawTemperatureChart(weatherData) {
                 }
             }]
         },
-        options: {
-            hover: {
-                mode: null,
-            },
-            layout: {
-                padding: {
-                    top: 30,
-                    left: 10,
-                    right: 10,
-                },
-            },
-            scales: {
-                y: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        display: false,
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        maxRotation: 0, // don't rotate tick labels
-                        maxTicksLimit: 6,
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false // hide legend
-                }
-            }
-        }
+        options: { scales: { y: { ticks: { display: false} } } }
     });
 }
+// END fillTemperatureChart HELPER FUNCTIONS
 
-function drawPrecipitationChart(weatherData) {
-    const precipitationData = [];
-    const timestamps = [];
+function fillPrecipitationChart(weatherData) {
+    destroyOldChart(currentWeatherDOMElems.precipitationChart.chartInstance);
+    const dataObj = selectDataForPrecipitationChart(weatherData);
+    createNewPrecipitationChartJsObj(dataObj);
+}
+
+// fillTemperatureChart HELPER FUNCTIONS
+function selectDataForPrecipitationChart(weatherData) {
+    const dataObj = {
+        precipitationData: [],
+        timestamps: [],
+    };
     
     for (let i = 0; i < 12; i++) {
-        precipitationData.push(weatherData.hourly[i].pop * 100);
-        timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
+        dataObj.precipitationData.push(weatherData.hourly[i].pop * 100);
+        dataObj.timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
-    if (currentWeatherDOMElems.precipitationChart.chartInstance) {
-        currentWeatherDOMElems.precipitationChart.chartInstance.destroy();
-    }
+    return (dataObj);
+}
 
+function createNewPrecipitationChartJsObj(dataObj) {
     currentWeatherDOMElems.precipitationChart.chartInstance = new Chart(currentWeatherDOMElems.precipitationChart, {
         plugins: [ChartDataLabels],
         type: 'bar',
         data: {
-            labels: timestamps,
+            labels: dataObj.timestamps,
             datasets: [{
-                barThickness: 10,
-                data: precipitationData,
-                pointRadius: 0, // hide dots on line
-                fill: true,
-                backgroundColor: "rgba(255, 255, 255, .3)", // use created gradient
-                tension: 0.3, // make line more curvy
+                barPercentage: 1.0, // no gap between bars
+                categoryPercentage: 1.0, // ^
+                data: dataObj.precipitationData,
+                backgroundColor: "rgba(255, 255, 255, .3)",
                 
                 datalabels: {
                     anchor: "end",
@@ -175,51 +171,14 @@ function drawPrecipitationChart(weatherData) {
                     padding: {
                         left: 5,
                         right: 5,
+                        top: 5,
                     },
                     display: "auto",
                     formatter: value => value > 0 ? value + "%" : "",
                 }
             }]
         },
-        options: {
-            hover: {
-                mode: null,
-            },
-            layout: {
-                padding: {
-                    top: 30,
-                    left: 10,
-                    right: 10,
-                },
-            },
-            scales: {
-                y: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        display: false,
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        maxRotation: 0, // don't rotate tick labels
-                        maxTicksLimit: 6,
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false // hide legend
-                }
-            }
-        }
+        options: { scales: { y: { ticks: { display: false} } } }
     });
 }
 
@@ -238,3 +197,4 @@ function switchCharts(event) {
         currentWeatherDOMElems.temperatureChartButton.classList.add("hidden");
     }
 }
+// END fillTemperatureChart HELPER FUNCTIONS
