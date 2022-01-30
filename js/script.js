@@ -25,6 +25,7 @@ const searchInput = document.querySelector(".search-input");
 document.querySelector(".search-button").addEventListener("click", fetch5day3hourAPIData);
 window.addEventListener("keydown", event => {
     if (event.key === "Enter") {
+        searchInput.blur();
         fetch5day3hourAPIData();
     }
 });
