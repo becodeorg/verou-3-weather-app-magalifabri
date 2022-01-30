@@ -184,6 +184,7 @@ header {
   transition: all 0.3s;
   text-transform: capitalize;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .chart-buttons-wrapper .chart-button.hidden {
   transform: scale(0.85);

@@ -116,6 +116,7 @@
         transition: all .3s;
         text-transform: capitalize;
         cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
         
         &.hidden {
             transform: scale(.85);
