@@ -34,10 +34,11 @@ header {
 }
 .search-bar .search-button {
   cursor: pointer;
-  margin-right: 20px;
+  padding-right: 20px;
   position: absolute;
-  right: 10px;
-  width: 30px;
+  right: 0px;
+  width: 60px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,12 +46,24 @@ header {
   border: none;
 }
 .search-bar .search-button img {
-  width: 75%;
+  height: 50%;
   filter: invert(1);
   opacity: 0.5;
   transition: all 0.3s ease;
+  margin-left: auto;
+}
+.search-bar .search-button:active {
+  -webkit-tap-highlight-color: transparent;
+}
+.search-bar .search-button:active img {
+  opacity: 1;
 }
 
+@media (hover: hover) {
+  .search-button:hover img {
+    opacity: 1;
+  }
+}
 ::placeholder {
   color: lightgray;
 }
