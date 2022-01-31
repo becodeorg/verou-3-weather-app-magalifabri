@@ -5,13 +5,13 @@ import { daysOfTheWeek } from "./script.js";
 
 // FUNCTIONS
 
-function changeFirstDayNameToToday() {
+const changeFirstDayNameToToday = () => {
     const firstDayNameH2 = document.querySelector(".day:not(.template) .day-name");
     firstDayNameH2.textContent = "Today";
 }
 
 
-function addTooltip(parentElem, tooltipContent) {
+const addTooltip = (parentElem, tooltipContent) => {
     const newTooltip = document.createElement("div");
     newTooltip.classList.add("tooltip");
     newTooltip.textContent = tooltipContent;
@@ -20,7 +20,7 @@ function addTooltip(parentElem, tooltipContent) {
 }
 
 
-function createNewIconImgWrapperDiv(item) {
+const createNewIconImgWrapperDiv = (item) => {
     const newWeatherIconImg = document.createElement("img");
     newWeatherIconImg.classList.add("weather-icon");
     newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
@@ -35,7 +35,7 @@ function createNewIconImgWrapperDiv(item) {
 }
 
 
-function createP(className, content) {
+const createP = (className, content) => {
     const newP = document.createElement("p");
     newP.classList.add(className);
     newP.textContent = content;
@@ -44,7 +44,7 @@ function createP(className, content) {
 }
 
 
-function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
+const addTimeSectionToInfoWrapper = (item, InfoWrapperDiv) => {
     // create base data items for time section
     const newTimeP = createP("time", item.dateObject.getHours() + "h");
     const newTempP = createP("temperature", Math.round(item.temperature) + "°");
@@ -67,7 +67,7 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
 }
 
 
-function addDay(dayTemplate) {
+const addDay = (dayTemplate) => {
     const newDay = dayTemplate.cloneNode(true);
     newDay.classList.remove("template");
     document.querySelector(".coming-days").append(newDay);
@@ -76,7 +76,7 @@ function addDay(dayTemplate) {
 }
 
 
-export function createComingDaysSection(parsedData) {
+export const createComingDaysSection = (parsedData) => {
     const dayTemplate = document.querySelector(".day");
     let lastHandledDay = "";
     let InfoWrapperDiv;
