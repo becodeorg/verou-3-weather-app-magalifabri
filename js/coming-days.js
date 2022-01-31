@@ -1,6 +1,6 @@
 // IMPORTS
 
-import { daysOfTheWeek } from "./script.js";
+import { daysOfTheWeek } from "./index.js";
 
 
 // FUNCTIONS
