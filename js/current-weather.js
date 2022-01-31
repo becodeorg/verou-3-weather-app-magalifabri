@@ -25,8 +25,7 @@ const currentWeatherDOMElems = {
 
 // FUNCTIONS
 
-
-function switchCharts(event) {
+const switchCharts = (event) => {
     currentWeatherDOMElems.temperatureChart.classList.remove("hidden");
     currentWeatherDOMElems.precipitationChart.classList.remove("hidden");
 
@@ -45,7 +44,7 @@ function switchCharts(event) {
 
 // END fillPrecipitationChart HELPER FUNCTIONS
 
-function createNewPrecipitationChartJsObj(dataObj) {
+const createNewPrecipitationChartJsObj = (dataObj) => {
     currentWeatherDOMElems.precipitationChart.chartInstance = new Chart(currentWeatherDOMElems.precipitationChart, {
         plugins: [ChartDataLabels],
         type: 'bar',
@@ -75,7 +74,7 @@ function createNewPrecipitationChartJsObj(dataObj) {
 }
 
 
-function selectDataForPrecipitationChart(weatherData) {
+const selectDataForPrecipitationChart = (weatherData) => {
     const dataObj = {
         precipitationData: [],
         timestamps: [],
@@ -92,7 +91,7 @@ function selectDataForPrecipitationChart(weatherData) {
 // fillPrecipitationChart HELPER FUNCTIONS
 
 
-function fillPrecipitationChart(weatherData) {
+const fillPrecipitationChart = (weatherData) => {
     destroyOldChart(currentWeatherDOMElems.precipitationChart.chartInstance);
     const dataObj = selectDataForPrecipitationChart(weatherData);
     createNewPrecipitationChartJsObj(dataObj);
@@ -101,7 +100,7 @@ function fillPrecipitationChart(weatherData) {
 
 // END fillTemperatureChart HELPER FUNCTIONS
 
-function createNewTemperatureChartJsObj(dataObj) {
+const createNewTemperatureChartJsObj = (dataObj) => {
     currentWeatherDOMElems.temperatureChart.chartInstance = new Chart(currentWeatherDOMElems.temperatureChart, {
         plugins: [ChartDataLabels],
         type: 'line',
@@ -133,7 +132,7 @@ function createNewTemperatureChartJsObj(dataObj) {
 }
 
 
-function selectDataForTemperatureChart(weatherData) {
+const selectDataForTemperatureChart = (weatherData) => {
     const dataObj = {
         temperatureData: [],
         timestamps: [],
@@ -148,14 +147,14 @@ function selectDataForTemperatureChart(weatherData) {
 }
 
 
-function destroyOldChart(chart) {
+const destroyOldChart = (chart) => {
     if (chart) {
         chart.destroy();
     }
 }
 
 
-function setGlobalChartJsOptions() {
+const setGlobalChartJsOptions = () => {
     Chart.defaults.font.size = 16;
     Chart.defaults.color = "white";
     Chart.defaults.font.family = "Dosis";
@@ -173,7 +172,7 @@ function setGlobalChartJsOptions() {
 // fillTemperatureChart HELPER FUNCTIONS
 
 
-function fillTemperatureChart(weatherData) {
+const fillTemperatureChart = (weatherData) => {
     setGlobalChartJsOptions();
     destroyOldChart(currentWeatherDOMElems.temperatureChart.chartInstance);
     const dataObj = selectDataForTemperatureChart(weatherData)
@@ -181,7 +180,7 @@ function fillTemperatureChart(weatherData) {
 }
 
 
-function fillMainDataDiv(data) {
+const fillMainDataDiv = (data) => {
     currentWeatherDOMElems.bigWeatherIcon.setAttribute("src", `./images/weather-icons/${data.iconName}.png`);
     currentWeatherDOMElems.bigWeatherIcon.setAttribute("alt", "icon of " + data.description);
     
@@ -193,7 +192,7 @@ function fillMainDataDiv(data) {
 }
 
 
-function fillSummaryP(data) {
+const fillSummaryP = (data) => {
     const day = daysOfTheWeek[data.dateObject.getDay()];
     const hours = data.dateObject.getHours();
     let minutes = data.dateObject.getMinutes();
@@ -206,7 +205,7 @@ function fillSummaryP(data) {
 }
 
 
-export function createCurrentWeatherDiv(currentWeatherData, allWeatherData) {
+export const createCurrentWeatherDiv = (currentWeatherData, allWeatherData) => {
     fillSummaryP(currentWeatherData);
     fillMainDataDiv(currentWeatherData);
     fillTemperatureChart(allWeatherData);
