@@ -1,34 +1,48 @@
+// IMPORTS
+
 import { daysOfTheWeek } from "./script.js";
 
-export function createComingDaysSection(parsedData) {
-    const dayTemplate = document.querySelector(".day");
-    let lastHandledDay = "";
-    let InfoWrapperDiv;
 
-    for (const timeSection of parsedData) {
-        const dayOfCurrentItem = daysOfTheWeek[timeSection.dateObject.getDay()];
-        // if time section pertains to a new day, create new day div to put the time sections in
-        if (lastHandledDay !== dayOfCurrentItem) {
-            lastHandledDay = dayOfCurrentItem;
-            
-            const dayDiv = addDay(dayTemplate);
-            dayDiv.children[0].textContent = dayOfCurrentItem;
-            InfoWrapperDiv = dayDiv.children[1];
-        }
-        addTimeSectionToInfoWrapper(timeSection, InfoWrapperDiv);
-    }
-    changeFirstDayNameToToday();
+// FUNCTIONS
+
+function changeFirstDayNameToToday() {
+    const firstDayNameH2 = document.querySelector(".day:not(.template) .day-name");
+    firstDayNameH2.textContent = "Today";
 }
 
-// createComingDaysSection() HELPER FUNCTIONS
 
-function addDay(dayTemplate) {
-    const newDay = dayTemplate.cloneNode(true);
-    newDay.classList.remove("template");
-    document.querySelector(".coming-days").append(newDay);
-
-    return (newDay);
+function addTooltip(parentElem, tooltipContent) {
+    const newTooltip = document.createElement("div");
+    newTooltip.classList.add("tooltip");
+    newTooltip.textContent = tooltipContent;
+    
+    parentElem.append(newTooltip);
 }
+
+
+function createNewIconImgWrapperDiv(item) {
+    const newWeatherIconImg = document.createElement("img");
+    newWeatherIconImg.classList.add("weather-icon");
+    newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
+    newWeatherIconImg.setAttribute("alt", "icon of " + item.description);
+
+    const newIconImgWrapperDiv = document.createElement("div");
+    newIconImgWrapperDiv.classList.add("weather-icon-wrapper");
+    newIconImgWrapperDiv.append(newWeatherIconImg);
+    addTooltip(newIconImgWrapperDiv, item.description);
+
+    return (newIconImgWrapperDiv);
+}
+
+
+function createP(className, content) {
+    const newP = document.createElement("p");
+    newP.classList.add(className);
+    newP.textContent = content;
+
+    return (newP);
+}
+
 
 function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     // create base data items for time section
@@ -52,43 +66,32 @@ function addTimeSectionToInfoWrapper(item, InfoWrapperDiv) {
     InfoWrapperDiv.append(newTimeSectionDiv);
 }
 
-// addTimeSectionToInfoWrapper() HELPER FUNCTIONS
 
-function createP(className, content) {
-    const newP = document.createElement("p");
-    newP.classList.add(className);
-    newP.textContent = content;
+function addDay(dayTemplate) {
+    const newDay = dayTemplate.cloneNode(true);
+    newDay.classList.remove("template");
+    document.querySelector(".coming-days").append(newDay);
 
-    return (newP);
+    return (newDay);
 }
 
-function createNewIconImgWrapperDiv(item) {
-    const newWeatherIconImg = document.createElement("img");
-    newWeatherIconImg.classList.add("weather-icon");
-    newWeatherIconImg.setAttribute("src", `./images/weather-icons/${item.iconName}.png`);
-    newWeatherIconImg.setAttribute("alt", "icon of " + item.description);
 
-    const newIconImgWrapperDiv = document.createElement("div");
-    newIconImgWrapperDiv.classList.add("weather-icon-wrapper");
-    newIconImgWrapperDiv.append(newWeatherIconImg);
-    addTooltip(newIconImgWrapperDiv, item.description);
+export function createComingDaysSection(parsedData) {
+    const dayTemplate = document.querySelector(".day");
+    let lastHandledDay = "";
+    let InfoWrapperDiv;
 
-    return (newIconImgWrapperDiv);
+    for (const timeSection of parsedData) {
+        const dayOfCurrentItem = daysOfTheWeek[timeSection.dateObject.getDay()];
+        // if time section pertains to a new day, create new day div to put the time sections in
+        if (lastHandledDay !== dayOfCurrentItem) {
+            lastHandledDay = dayOfCurrentItem;
+            
+            const dayDiv = addDay(dayTemplate);
+            dayDiv.children[0].textContent = dayOfCurrentItem;
+            InfoWrapperDiv = dayDiv.children[1];
+        }
+        addTimeSectionToInfoWrapper(timeSection, InfoWrapperDiv);
+    }
+    changeFirstDayNameToToday();
 }
-
-function addTooltip(parentElem, tooltipContent) {
-    const newTooltip = document.createElement("div");
-    newTooltip.classList.add("tooltip");
-    newTooltip.textContent = tooltipContent;
-    
-    parentElem.append(newTooltip);
-}
-
-// END addTimeSectionToInfoWrapper() HELPER FUNCTIONS
-
-function changeFirstDayNameToToday() {
-    const firstDayNameH2 = document.querySelector(".day:not(.template) .day-name");
-    firstDayNameH2.textContent = "Today";
-}
-
-// END createComingDaysSection() HELPER FUNCTIONS
