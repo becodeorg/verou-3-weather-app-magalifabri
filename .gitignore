@@ -2,3 +2,4 @@
 .vscode
 *.css.map
 notes.md
+node_modules

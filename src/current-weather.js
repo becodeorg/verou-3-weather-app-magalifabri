@@ -81,7 +81,7 @@ const selectDataForPrecipitationChart = (weatherData) => {
     };
     
     for (let i = 0; i < 12; i++) {
-        dataObj.precipitationData.push(weatherData.hourly[i].pop * 100);
+        dataObj.precipitationData.push(Math.round(weatherData.hourly[i].pop * 100));
         dataObj.timestamps.push(new Date(weatherData.hourly[i].dt * 1000).getHours() + "h");
     }
 
